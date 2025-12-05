@@ -1,0 +1,510 @@
+:root {
+    --primary-green: #1eb36a;
+    --dark-blue: #2E3E5C;
+    --light-gray: #F4F5F7;
+    --text-gray: #777;
+    --text-dark: #2c3e50;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #ffffff;
+    padding-bottom: 20px;
+}
+
+/* Header */
+.header {
+    background: white;
+    padding: 15px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 8px 30px rgba(46,62,92,0.12);
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo img {
+    height: 60px;
+    width: auto;
+}
+
+/* Tabs */
+.tabs-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.tab-btn {
+    padding: 12px 30px;
+    border: none;
+    background: white;
+    color: var(--text-gray);
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.tab-btn.active {
+    background: var(--primary-green);
+    color: white;
+    box-shadow: 0 4px 12px rgba(30, 179, 106, 0.3);
+}
+
+.tab-btn:hover:not(.active) {
+    background: #f0f0f0;
+}
+
+/* Category Section */
+.category-section {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.category-section h3 {
+    font-size: 22px;
+    color: var(--text-dark);
+    margin-bottom: 15px;
+}
+
+.category-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+}
+
+.category-pills {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    scroll-behavior: smooth;
+    flex: 1;
+    user-select: none;
+    scroll-snap-type: none;
+}
+
+/* Nascondi scrollbar */
+.category-pills::-webkit-scrollbar {
+    display: none;
+}
+
+.category-pills {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.category-pills::-webkit-scrollbar-thumb {
+    background: var(--light-gray);
+    border-radius: 4px;
+}
+
+/* Pulsanti di scroll */
+.scroll-btn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--light-gray);
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    color: var(--text-dark);
+    font-size: 18px;
+}
+
+.scroll-btn:hover {
+    background: var(--light-gray);
+    border-color: var(--primary-green);
+    color: var(--primary-green);
+}
+
+.scroll-btn:active {
+    transform: scale(0.95);
+}
+
+.category-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.category-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #999;
+    transition: all 0.3s;
+}
+
+.category-label.active {
+    color: var(--primary-green);
+}
+
+.category-pill.active ~ .category-label {
+    color: var(--primary-green);
+}
+
+.category-pill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    border: 1px solid var(--light-gray);
+    background: #F4F5F7;
+    border-radius: 12px;
+    font-size: 18px;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 56px;
+    height: 56px;
+}
+
+.category-pill i {
+    font-size: 24px;
+}
+
+.category-pill.active {
+    background: var(--primary-green);
+    color: white;
+    border-color: var(--primary-green);
+}
+
+.category-pill.active svg {
+    filter: brightness(0) invert(1);
+}
+
+.category-pill.active i {
+    color: white;
+}
+
+.category-pill:hover:not(.active) {
+    border-color: var(--primary-green);
+    background: #f9fff9;
+}
+
+/* Recipes Grid */
+.recipes-grid {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+/* Recipe Card */
+.recipe-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+
+.recipe-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Header con avatar e nome utente */
+.recipe-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background: white;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #f0f0f0;
+}
+
+.user-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+/* Immagine della ricetta */
+.recipe-image {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+}
+
+.recipe-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.recipe-card:hover .recipe-image img {
+    transform: scale(1.05);
+}
+
+/* Footer con info ricetta */
+.recipe-footer {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.recipe-info {
+    flex: 1;
+}
+
+.recipe-title-rating {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.recipe-info h4 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-dark);
+    flex: 1;
+}
+
+.recipe-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* Difficoltà (cappelli chef) */
+.difficulty {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.difficulty svg {
+    width: 16px;
+    height: 14px;
+}
+
+/* Tempo */
+.time {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--text-gray);
+    font-weight: 500;
+}
+
+.time i {
+    font-size: 16px;
+}
+
+/* Pulsante bookmark/rating */
+.bookmark-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0;
+    background: transparent;
+    border-radius: 8px;
+    cursor: default;
+    border: none;
+    margin-bottom: 0;
+    flex-shrink: 0;
+}
+
+.bookmark-btn i {
+    color: #f59e0b;
+    font-size: 18px;
+}
+
+.bi-star-fill {
+    color: #f59e0b;
+}
+
+.star-value {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    body {
+        padding-bottom: 80px;
+    }
+
+    .header {
+        padding: 10px 15px;
+        position: sticky;
+        top: 0;
+        z-index: 101;
+    }
+
+    .header-content {
+        justify-content: space-between;
+    }
+
+    .logo img {
+        height: 45px;
+    }
+
+    .tab-btn {
+        padding: 10px 24px;
+        font-size: 14px;
+    }
+
+    .category-section {
+        padding: 0 15px;
+    }
+
+    .category-section h3 {
+        font-size: 18px;
+    }
+
+    .category-container {
+        gap: 8px;
+    }
+
+    .scroll-btn {
+        display: flex;
+    }
+
+    .category-pills {
+        flex: 1;
+        padding-bottom: 0;
+    }
+
+    .recipes-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding: 0 15px;
+    }
+
+    .recipe-card {
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    .recipe-header {
+        padding: 12px;
+    }
+
+    .user-avatar {
+        width: 32px;
+        height: 32px;
+    }
+
+    .user-name {
+        font-size: 13px;
+    }
+
+    .recipe-image {
+        height: 160px;
+    }
+
+    .recipe-footer {
+        padding: 12px;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .recipe-info h4 {
+        font-size: 15px;
+        margin-bottom: 6px;
+    }
+
+    .recipe-meta {
+        gap: 8px;
+    }
+
+    .time {
+        font-size: 12px;
+    }
+
+    .bookmark-btn {
+        align-self: flex-start;
+        font-size: 16px;
+        padding: 6px 10px;
+    }
+
+    .star-value {
+        font-size: 13px;
+    }
+
+    .recipe-card {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        overflow: visible;
+    }
+
+    .tab-btn {
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .category-pill {
+        box-shadow: none;
+    }
+
+    .category-pill.active {
+        box-shadow: none;
+    }
+}
+
+@media (min-width: 769px) {
+    body {
+        padding-bottom: 0;
+    }
+}
+
+@media (min-width: 1200px) {
+    .recipes-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1400px) {
+    .recipes-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}

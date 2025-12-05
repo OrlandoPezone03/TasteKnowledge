@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pancake Recipe Dashboard</title>
+    <link rel="stylesheet" href="../css/recipePage.css">
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <div class="hero">
+            <div class="hero-overlay">
+                <button class="icon-btn">&lt;</button>
+                <button class="icon-btn">&#9825;</button>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            
+            <aside class="sidebar">
+                <div>
+                    <h1>Pancakes</h1>
+                    <div class="author-row">
+                        <img src="https://i.pravatar.cc/150?u=elena" alt="Elena" class="avatar">
+                        <span class="author-name">Andrew Pancakes Lover</span>
+                    </div>
+                    
+                    <div class="meta-info">
+                        <span>⏱ 60 mins</span>
+                        <span class="rating-value">★ 4.5 (200+)</span>
+                    </div>
+                </div>
+
+                <div class="description">
+                    I miei pancake sono soffici e dorati, con una consistenza leggera che si scioglie in bocca. Perfetti per la domenica mattina.
+                </div>
+
+                <div class="nutrition-widget">
+                    <h4>Nutrition Facts</h4>
+                    <div class="nutrition-container">
+                        <div class="donut-chart">
+                            <div class="donut-inner">
+                                <span class="cal-count">420</span>
+                                <span class="cal-label">Kcal</span>
+                            </div>
+                        </div>
+                        <div class="nutri-list">
+                            <div class="nutrient-protein">Protein: 9.2 g</div>
+                            <div class="nutrient-carbs">Carbs: 20.1 g</div>
+                            <div class="nutrient-fats">Fats: 7.4 g</div>
+                        </div>
+                    </div>
+                </div>
+                
+                </aside>
+
+            <main class="main-content">
+                
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab('ingredients')" id="btn-ingredients">Ingredients</button>
+                    <button class="tab-btn" onclick="switchTab('science')" id="btn-science">The Science</button>
+                </div>
+
+                <div id="view-ingredients" class="section-view active">
+                    <div class="ingredient-grid">
+                        <div class="ingredient-item">
+                            <div class="check-circle">&#10003;</div> <span>4 Large Eggs</span>
+                        </div>
+                        <div class="ingredient-item">
+                            <div class="check-circle">&#10003;</div> <span>1/2 Cup Butter</span>
+                        </div>
+                        <div class="ingredient-item">
+                            <div class="check-circle">&#10003;</div> <span>200 ml Milk</span>
+                        </div>
+                        <div class="ingredient-item">
+                            <div class="check-circle">&#10003;</div> <span>300g Flour</span>
+                        </div>
+                    </div>
+                    
+                    <h3>Preparation Steps</h3>
+                    <div class="prep-step">
+                        <div class="step-number">1</div>
+                        <div>
+                            <p class="step-title">Prepare the base</p>
+                            <p class="step-description">Mix eggs and milk in a large bowl until fluffy. Sift the flour gently to avoid lumps.</p>
+                        </div>
+                    </div>
+                    
+                    <img src="https://images.unsplash.com/photo-1598214886806-c87b84b7078b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" class="recipe-image" alt="pancakes">
+                </div>
+
+                <div id="view-science" class="section-view">
+                    <h3>Why this recipe works</h3>
+                    
+                    <div class="science-box">
+                        <h3>🧬 Flour Chemistry</h3>
+                        <ul>
+                            <li><strong>Composition:</strong> mainly starch and proteins such as glutenin and gliadin.</li>
+                            <li><strong>Function:</strong> The interaction between liquid and flour creates gluten strands which trap air bubbles, making the pancakes fluffy.</li>
+                        </ul>
+                        <br>
+                        <h3>🌡️ Maillard Reaction</h3>
+                        <p>The browning you see on the surface is due to the Maillard reaction, happening between amino acids and reducing sugars around 140°C.</p>
+                    </div>
+                </div>
+
+                <div class="comments-section">
+                    <h3>Community Comments</h3>
+                    
+                    <div class="comment-input-area">
+                        <input type="text" class="comment-input" placeholder="Write a comment..." id="userInput">
+                        <button class="send-btn" onclick="addComment()">Send</button>
+                    </div>
+
+                    <div id="comment-list">
+                        <div class="comment-card">
+                            <div class="comment-header">
+                                <img src="https://i.pravatar.cc/150?u=emily" class="avatar" alt="user">
+                                <div style="flex:1;">
+                                    <div class="comment-header-row">
+                                        <span class="comment-author">Emily Ross</span>
+                                        <span class="comment-time">1 hour ago</span>
+                                    </div>
+                                    <div class="comment-text">Love it! It's gorgeous! The texture is amazing.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div> <div class="chefbot-container">
+        <div class="chefbot-badge">Need help?</div>
+        <div class="chefbot-circle">
+            <svg class="chefbot-icon-svg" viewBox="0 0 24 24"><path d="M6 13.87A4 4 0 0 1 7.41 6a5.11 5.11 0 0 1 1.05-1.54 5 5 0 0 1 7.08 0A5.11 5.11 0 0 1 16.59 6 4 4 0 0 1 18 13.87V21H6Z"></path><line x1="6" y1="17" x2="18" y2="17"></line></svg>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            document.querySelectorAll('.section-view').forEach(view => view.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('view-' + tabName).classList.add('active');
+            document.getElementById('btn-' + tabName).classList.add('active');
+        }
+
+        function addComment() {
+            const input = document.getElementById('userInput');
+            const text = input.value;
+            const list = document.getElementById('comment-list');
+            if(text.trim() === "") return;
+
+            const newComment = document.createElement('div');
+            newComment.className = 'comment-card';
+            newComment.innerHTML = `
+                <div class="comment-header">
+                    <img src="https://i.pravatar.cc/150?u=me" class="avatar">
+                    <div style="flex:1;">
+                        <div class="comment-header-row">
+                            <span class="comment-author">Tu</span>
+                            <span class="comment-time">Adesso</span>
+                        </div>
+                        <div class="comment-text">${text}</div>
+                    </div>
+                </div>
+            `;
+            list.insertBefore(newComment, list.firstChild);
+            input.value = "";
+        }
+    </script>
+</body>
+</html>

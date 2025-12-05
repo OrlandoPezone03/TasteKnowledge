@@ -1,0 +1,41 @@
+<!-- Recipe Card Template -->
+<div class="recipe-card">
+    <div class="recipe-header">
+        <img src="{{ recipe.user_avatar }}" alt="{{ recipe.user_name }}" class="user-avatar">
+        <span class="user-name">{{ recipe.user_name }}</span>
+    </div>
+    <div class="recipe-image">
+        <img src="{{ recipe.image }}" alt="{{ recipe.title }}">
+    </div>
+    <div class="recipe-footer">
+        <div class="recipe-info">
+            <div class="recipe-title-rating">
+                <h4>{{ recipe.title }}</h4>
+                {% if recipe.rating %}
+                <div class="bookmark-btn">
+                    <i class="bi bi-star-fill"></i>
+                    <p class="star-value">{{ recipe.rating }}</p>
+                </div>
+                {% else %}
+                <div class="bookmark-btn">
+                    <i class="bi bi-star"></i>
+                </div>
+                {% endif %}
+            </div>
+            <div class="recipe-meta">
+                <span class="difficulty">
+                    {% for i in range(recipe.difficulty) %}
+                    <svg width="18" height="15" viewBox="0 0 18 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M17.6368 4.81571H15.6827L17.5927 1.92358C17.9513 1.38051 17.8013 0.646761 17.2582 0.288105L17.1179 0.19549C16.9242 0.0676453 16.6997 0 16.4682 0C16.0702 0 15.7017 0.198123 15.4825 0.529994L12.6523 4.81562H0.363196C0.162621 4.81562 0 4.97824 0 5.17881V7.40366C0 10.3439 1.94428 12.8384 4.61468 13.6693V14.5686C4.61468 14.7692 4.7773 14.9318 4.97788 14.9318H13.0221C13.2227 14.9318 13.3853 14.7692 13.3853 14.5686V13.6693C16.0557 12.8384 18 10.3438 18 7.40366V5.1789C18 4.97833 17.8374 4.81571 17.6368 4.81571ZM16.0886 0.930327C16.1729 0.802663 16.3148 0.726392 16.4682 0.726392C16.5569 0.726392 16.6431 0.752452 16.7176 0.801665L16.8579 0.89428C17.0668 1.0322 17.1245 1.31441 16.9865 1.52334L14.8122 4.81571H13.5227L16.0886 0.930327Z"
+                            fill="#9FA5C0" />
+                    </svg>
+                    {% endfor %}
+                </span>
+                <span class="time">
+                    <i class="bi bi-clock"></i> {{ recipe.time }}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

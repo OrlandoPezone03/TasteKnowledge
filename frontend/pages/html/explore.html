@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Recipes</title>
+    <link rel="icon" href="../../assets/logo.svg">
+    <link rel="stylesheet" href="../css/navBar.css">
+    <link rel="stylesheet" href="../css/explore.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <script src="../js/navbar.js"></script>
+</head>
+<body>
+    <!-- Header con logo e navbar -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <img src="../../assets/logo.svg" alt="Taste Knowledge">
+            </div>
+            <!-- NavBar: iniettata da navbar.js -->
+            <div id="navbar-container" aria-hidden="true"></div>
+        </div>
+    </header>
+
+    <!-- Barra di ricerca -->
+    <div class="search-container">
+        <div class="search-header">
+            <div class="search-bar-container">
+                <svg class="search-icon-inside" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" class="search-input" placeholder="search">
+            </div>
+            
+            <button class="filter-btn-trigger" onclick="toggleModal()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line>
+                    <line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line>
+                    <line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Modale Filtri -->
+    <div class="modal-overlay" id="filterModal">
+        <div class="filter-modal">
+            <h3 class="modal-title">Add a Filter</h3>
+            
+            <div class="filter-group">
+                <div class="filter-section-title">Cooking Time <span style="font-weight:400; color:#999;">(in minutes)</span></div>
+                
+                <div class="range-labels">
+                    <span>&lt;15</span>
+                    <span>30</span>
+                    <span>&gt;30</span>
+                </div>
+                
+                <input type="range" min="15" max="45" value="30" id="timeRange" oninput="updateSliderColor(this)">
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="toggleModal()">Cancel</button>
+                <button class="btn-done" onclick="toggleModal()">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Logica Apertura/Chiusura Modale
+        function toggleModal() {
+            const modal = document.getElementById('filterModal');
+            modal.classList.toggle('open');
+        }
+
+        // Aggiorna visivamente il colore verde dello slider mentre lo muovi
+        function updateSliderColor(slider) {
+            const value = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+            slider.style.background = `linear-gradient(to right, #1eb36a 0%, #1eb36a ${value}%, #e0e0e0 ${value}%, #e0e0e0 100%)`;
+        }
+
+        // Inizializza il colore dello slider al caricamento
+        window.addEventListener('DOMContentLoaded', () => {
+            const slider = document.getElementById('timeRange');
+            updateSliderColor(slider);
+        });
+    </script>
+</body>
+</html>

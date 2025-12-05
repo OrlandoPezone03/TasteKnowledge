@@ -1,0 +1,155 @@
+/* Navbar Styles */
+.navbar {
+    background-color: #fff;
+    padding: 1rem 0;
+    display: block;
+}
+
+.navbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.nav-main {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.nav-auth {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    color: #666;
+    font-size: 0.95rem;
+    text-decoration: none;
+}
+
+.nav-btn:hover {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.nav-btn.active {
+    background-color: #1eb36a;
+    color: #fff;
+}
+
+.nav-btn i {
+    font-size: 1.2rem;
+}
+
+/* Auth buttons styling */
+.nav-auth-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 14px;
+    border-radius: 22px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid #1eb36a;
+    background: white;
+    color: #1eb36a;
+    transition: all 0.18s ease;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.nav-auth-btn.register {
+    background: #1eb36a;
+    color: white;
+}
+
+.nav-auth-btn.login:hover {
+    background: #f0fff4;
+}
+
+.nav-auth-btn.register:hover {
+    filter: brightness(0.95);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .navbar {
+        position: static;
+        padding: 1rem 0;
+        border-top: none;
+        background-color: #fff;
+        z-index: 100;
+    }
+
+    .navbar-content {
+        justify-content: space-between;
+        gap: 2rem;
+        padding: 0 1rem;
+    }
+
+    .nav-main {
+        gap: 0;
+        justify-content: space-around;
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 0.75rem 0;
+        border-top: 1px solid #e0e0e0;
+        background-color: #fff;
+    }
+
+    .nav-auth {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .nav-btn {
+        flex-direction: row;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.95rem;
+        background: none;
+        color: #666;
+    }
+
+    .nav-btn:hover {
+        background-color: #f0f0f0;
+        color: #333;
+    }
+
+    .nav-btn.active {
+        background-color: #1eb36a;
+        color: #fff;
+    }
+
+    .nav-btn i {
+        font-size: 1.2rem;
+    }
+
+    .nav-btn span {
+        display: none;
+    }
+
+    .nav-auth-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+}

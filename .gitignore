@@ -1,2 +1,6 @@
-.env
-README.md
+backend/.env
+backend/.env/
+venv/
+__pycache__/
+*.pyc
+*.pyo

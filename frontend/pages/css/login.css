@@ -1,0 +1,300 @@
+:root {
+    --primary-green: #1eb36a;
+    --dark-blue: #2E3E5C;
+    --light-gray: #f5f5f5;
+    --border-gray: #d9d9d9;
+    --text-gray: #777;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Container principale per layout desktop */
+.main-container {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    min-height: 700px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+/* Sezione sinistra con immagine */
+.left-section {
+    display: none;
+    flex: 1;
+    background: linear-gradient(135deg, #a8c5dd 0%, #7fa8c9 100%);
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+.left-section img {
+    max-width: 80%;
+    height: auto;
+}
+
+/* Sezione destra con form */
+.right-section {
+    flex: 1;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+/* Header Section */
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    font-size: 30px;
+    font-weight: bolder;
+    color: var(--dark-blue);
+    margin-bottom: 8px;
+}
+
+.header h2 {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--dark-blue);
+}
+
+/* Role Selection */
+.role-selection {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 30px;
+    width: 100%;
+    max-width: 320px;
+}
+
+.role-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid var(--border-gray);
+    border-radius: 50px;
+    background: white;
+    color: var(--dark-blue);
+    transition: all 0.3s ease;
+}
+
+.role-btn i {
+    display: flex;
+    font-size: 23px;
+}
+
+.role-btn svg {
+    display: flex;
+    fill: var(--dark-blue);
+    transition: fill 0.3s ease;
+}
+
+.role-btn.active {
+    background: var(--primary-green);
+    color: white;
+    border-color: var(--primary-green);
+}
+
+.role-btn.active svg {
+    fill: white;
+}
+
+.role-btn:hover:not(.active) {
+    border-color: var(--primary-green);
+    background: #f9fff9;
+}
+
+/* Form Section */
+.subtitle {
+    color: var(--text-gray);
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-container {
+    width: 100%;
+    max-width: 320px;
+}
+
+.input-wrapper {
+    position: relative;
+    margin-bottom: 16px;
+}
+
+.input-wrapper i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-gray);
+    font-size: 18px;
+    pointer-events: none;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding: 14px 16px 14px 48px;
+    border: 1px solid var(--border-gray);
+    border-radius: 50px;
+    font-size: 15px;
+    outline: none;
+    transition: all 0.3s ease;
+    background: var(--light-gray);
+}
+
+.input-wrapper input:focus {
+    border-color: var(--primary-green);
+    background: white;
+}
+
+.input-wrapper input::placeholder {
+    color: #aaa;
+}
+
+/* Password Toggle */
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper input {
+    padding-right: 52px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #e6e6e6;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    color: var(--dark-blue);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.toggle-password i {
+    font-size: 16px;
+    display: contents;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggle-password:hover {
+    background: #d0d0d0;
+    color: var(--primary-green);
+}
+
+/* Register Button */
+.register-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--primary-green);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 8px;
+}
+
+.register-btn:hover {
+    background: #18a05f;
+    transform: translateY(-1px);
+}
+
+.register-btn:active {
+    transform: translateY(0);
+}
+
+/* Footer Section */
+.footer {
+    margin-top: 24px;
+    text-align: center;
+}
+
+.footer p {
+    color: var(--text-gray);
+    font-size: 14px;
+}
+
+.footer a {
+    color: var(--primary-green);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.footer a:hover {
+    color: #18a05f;
+    text-decoration: underline;
+}
+
+/* Chef Icon */
+.icon-chef {
+    width: 20px;
+    height: 20px;
+}
+
+/* Media Query per Desktop */
+@media (min-width: 768px) {
+    body {
+        background-color: #f0f0f0;
+    }
+
+    .left-section {
+        display: flex;
+    }
+
+    .main-container {
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    }
+}
+
+/* Media Query per Mobile */
+@media (max-width: 767px) {
+    .main-container {
+        box-shadow: none;
+        border-radius: 0;
+    }
+
+    .right-section {
+        padding: 20px;
+    }
+}
