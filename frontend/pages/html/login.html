@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <!-- PWA Support for offline functionality -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="assets/logo.svg">
+    <link rel="stylesheet" type="text/css" href="pages/css/login.css">
+    <!-- Using bootstrap icons for consistency with rest of app -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+</head>
+
+<body>
+    <div class="auth-wrapper">
+
+        <div class="brand-panel">
+            <!-- Logo2 without the circle -->
+            <img src="assets/logo2.svg" alt="Taste Knowledge Logo">
+        </div>
+
+        <div class="form-panel">
+            <div class="auth-header">
+                <h1>Welcome!</h1>
+                <h2>Are you a User or a Chef?</h2>
+            </div>
+
+            <div class="role-selection">
+                <!-- Two-role system; users and chefs -->
+                <!-- Frontend tracks selection for proper backend routing -->
+                <button class="role-btn active" data-role="user">
+                    <i class="bi bi-person-fill"></i>
+                    User
+                </button>
+                <button class="role-btn" data-role="chef">
+                    <!-- Custom chef icon. Tried using bootstrap but needed specific design -->
+                    <svg class="icon-chef" viewBox="0 0 24 24">
+                        <path
+                            d="M6 3.54098C2.6863 3.54098 0 6.18324 0 9.44262C0 11.8626 1.48092 13.9425 3.6 14.8532V18H20.4V14.8532C22.5191 13.9425 24 11.8626 24 9.44262C24 6.18324 21.3137 3.54098 18 3.54098C17.6994 3.54098 17.404 3.56273 17.1151 3.60471C16.3925 1.50853 14.3753 0 12 0C9.62472 0 7.60753 1.50853 6.88483 3.60471C6.59608 3.56273 6.30062 3.54098 6 3.54098Z" />
+                        <path
+                            d="M19.9998 20.0001H3.99976C4.0114 21.7193 4.0932 22.6609 4.66746 23.2791C5.33709 24.0001 6.41484 24.0001 8.57036 24.0001H15.4292C17.5847 24.0001 18.6624 24.0001 19.3321 23.2791C19.9064 22.6609 19.9881 21.7193 19.9998 20.0001Z" />
+                    </svg>
+                    Chef
+                </button>
+            </div>
+
+            <p class="subtitle">Join our Community!</p>
+
+            <form class="credentials-form" method="POST" action="/login">
+                <!-- Default to user role. JS will update this when chef role is selected -->
+                <input type="hidden" name="role" id="roleInput" value="user">
+
+                <div class="form-group">
+                    <i class="bi bi-envelope"></i>
+                    <input type="email" name="email" id="email" placeholder="Email" required>
+                </div>
+
+                <div class="form-group password-field">
+                    <i class="bi bi-lock"></i>
+                    <input type="password" name="password" id="password" placeholder="Password" required>
+                    <button type="button" class="visibility-toggle" id="togglePassword">
+                        <i class="bi bi-eye-slash"></i>
+                    </button>
+                </div>
+
+                <button type="submit" class="register-btn">Login</button>
+            </form>
+
+            <div class="auth-footer">
+                <!-- Goes to Home Page -->
+                <a href="/" class="home-btn"><i class="bi bi-house-fill"></i> Back to Home</a>
+                <!-- Route non-authenticated users to registration -->
+                <p>Don't have any account? <a href="/register">Register</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
