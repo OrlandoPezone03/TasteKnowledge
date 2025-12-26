@@ -1,6 +1,8 @@
-from flask import Flask, render_template, jsonify
-from dotenv import load_dotenv
+from flask import Flask, render_template, jsonify, session, request
+from flask.json.provider import DefaultJSONProvider
 import os
+from bson.objectid import ObjectId
+from db import recipes_collection, chef_collection, user_collection, ingredients_collection, comments_collection
 
 app = Flask(
     __name__,
