@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/assets/logo.svg">
+    <link rel="stylesheet" href="/pages/css/profile.css">
+    <link rel="stylesheet" href="/pages/css/navBar.css">
+    <!-- Using bootstrap icons for consistency with rest of app -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+</head>
+
+<body>
+    <!-- Navbar gets injected here by navbar.js -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <img src="/assets/logo.svg" alt="Taste Knowledge">
+            </div>
+            <div id="navbar-container"></div>
+        </div>
+    </header>
+
+    <div class="app-container">
+            <div class="profile-section">
+                <div class="profile-header">
+                    <!-- Settings gear icon. It opens a modal -->
+                    <button id="settings-btn" class="settings-btn">
+                        <i class="bi bi-gear-fill"></i>
+                    </button>
+
+                    <!-- Empty Avatar image -->
+                    <img id="profile-avatar" class="profile-avatar-large"
+                        src="https://imgs.search.brave.com/GgV2avlvxYDeuhFu8D5KI3V8PNMBf6gEm59lDgvqhmg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzIzLzkx/LzllLzIzOTE5ZTlm/ZWRlYjIwZjljMDY3/OWYxYjI1NzllMzc0/LmpwZw"
+                        alt="User Avatar">
+
+                    <h2 id="profile-name" class="profile-name">Guest</h2>
+
+                    <div class="stats-block">
+                        <div class="stats-count">0</div>
+                        <div class="stats-label">Following</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Favorites section below profile -->
+            <div class="favorites-section">
+                <h2 class="favorites-title">
+                    Favorites 
+                    <i class="bi bi-heart-fill"></i>
+                </h2>
+                <!-- Content populated dynamically -->
+                <div class="favorites-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings modal overlay hidden by default-->
+    <div id="settings-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="modal-back-btn" class="icon-btn">
+                    <i class="bi bi-arrow-left"></i>
+                </button>
+                <h3>Settings</h3>
+            </div>
+
+            <div class="modal-body">
+                <div class="profile-form">
+                    <div class="form-group">
+                        <label for="username-input">Username</label>
+                        <input type="text" id="username-input" class="form-input"
+                            placeholder="Enter your username">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="avatar-input">Avatar URL</label>
+                        <!-- Users paste external image URL (TODO: add file upload) -->
+                        <input type="text" id="avatar-input" class="form-input"
+                            placeholder="Enter avatar URL">
+                    </div>
+
+                    <button id="save-profile-btn" class="save-btn">
+                        Save Changes
+                    </button>
+                </div>
+
+                <!-- Logout button -->
+                <button id="logout-btn" class="logout-btn">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/pages/js/navbar.js" defer></script>
+    <script src="/pages/js/profile.js" defer></script>
+</body>
+</html>
