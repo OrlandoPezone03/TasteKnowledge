@@ -1,0 +1,288 @@
+/* Root for defining colors */
+:root {
+    --primary-green: #1eb36a;
+    --secondary-green: #18a05f;
+    --dark-blue: #2E3E5C;
+    --light-gray: #f5f5f5;
+    --border-gray: #d9d9d9;
+    --icon-bg: #7fa8c9;
+    --text-gray: #777;
+}
+
+/* Applying for all content in the page */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Roboto, sans-serif;
+}
+
+body {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    display: flex;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Two-column authentication layout wrapper */
+.auth-wrapper {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    min-height: 700px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+/* left panel with logo and gradient background */
+.brand-panel {
+    display: none;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background: var(--icon-bg);
+}
+
+.brand-panel img {
+    max-width: 80%;
+    height: auto;
+}
+
+/* Right side form panel */
+.form-panel {
+    flex: 1;
+    padding: 40px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Authentication header section */
+.auth-header {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* Style for "Welcome" text*/
+.auth-header h1 {
+    color: var(--primary-green);
+    font-size: 30px;
+    font-weight: bolder;
+    margin-bottom: 8px;
+}
+
+/* Style for "Are you a User or a Chef?" text*/
+.auth-header h2 {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--dark-blue);
+}
+
+/* Role Selection (User or Chef) */
+.role-selection {
+    display: flex;
+    width: 100%;
+    max-width: 320px;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.role-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-gray);
+    border-radius: 50px;
+    gap: 8px;
+    padding: 14px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    background: white;
+    color: var(--dark-blue);
+}
+
+/* user icon */
+.role-btn i {
+    display: flex;
+    font-size: 23px;
+}
+
+/* chef icon */
+.icon-chef {
+    width: 20px;
+    height: 20px;
+}
+
+.role-btn.active .icon-chef {
+    filter: brightness(0) invert(1); /* it's for changing the icon color when active for the chef icon */
+}
+
+.role-btn.active {
+    background: var(--primary-green);
+    color: white;
+    border-color: var(--primary-green);
+}
+
+.role-btn:hover:not(.active) {
+    border-color: var(--primary-green);
+}
+
+/* style for "Join our Community!" text */
+.subtitle {
+    color: var(--text-gray);
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Form Section for email and password */
+.credentials-form {
+    width: 100%;
+    max-width: 320px;
+}
+
+.form-group {
+    position: relative;
+    margin-bottom: 16px;
+}
+
+.form-group i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-gray);
+    font-size: 18px;
+    pointer-events: none;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 14px 16px 14px 48px;
+    border: 1px solid var(--border-gray);
+    border-radius: 50px;
+    font-size: 15px;
+    outline: none;
+    background: var(--light-gray);
+}
+
+.form-group input:focus {
+    border-color: var(--primary-green);
+    background: white;
+}
+
+.form-group input::placeholder {
+    color: gray;
+}
+
+/* Password field with visibility toggle */
+.password-field {
+    position: relative;
+}
+
+.password-field input {
+    padding-right: 52px;
+}
+
+/* button for password visibility (eye icon) */
+.visibility-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #e6e6e6;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    color: var(--dark-blue);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.visibility-toggle i {
+    font-size: 16px;
+    display: contents;
+    align-items: center;
+    justify-content: center;
+}
+
+.visibility-toggle:hover {
+    background: #d0d0d0;
+    color: var(--primary-green);
+}
+
+/* register button */
+.register-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--primary-green);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 8px;
+}
+
+.register-btn:hover {
+    background: var(--secondary-green);
+}
+
+/* bottom footer with links (back home and register) */
+.auth-footer {
+    margin-top: 24px;
+    text-align: center;
+}
+
+.auth-footer p {
+    color: var(--text-gray);
+    font-size: 14px;
+}
+
+.auth-footer a {
+    color: var(--primary-green);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-footer a:hover {
+    color: var(--secondary-green);
+    text-decoration: underline;
+}
+
+/* media for web view (PC or Tablet) */
+@media (min-width: 768px) {
+    body {
+        background-color: #f0f0f0;
+    }
+
+    .brand-panel {
+        display: flex;
+    }
+}
+
+/* mobile responsive layout */
+@media (max-width: 767px) {
+    .auth-wrapper {
+        box-shadow: none;
+        border-radius: 0;
+    }
+
+    .form-panel {
+        padding: 20px;
+    }
+}
