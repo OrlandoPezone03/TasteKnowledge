@@ -1,0 +1,37 @@
+<nav class="navbar-content">
+    <div class="nav-main">
+        <a href="/" class="nav-btn" id="home-btn">
+            <i class="bi bi-house-fill"></i>
+            Home
+        </a>
+        <a href="/addRecipe" class="nav-btn chef-link" id="addRecipe-btn">
+            <i class="bi bi-pencil-square"></i>
+            Add Recipe
+        </a>
+        <a href="/explore" class="nav-btn" id="explore-btn">
+            <i class="bi bi-search"></i>
+            Explore
+        </a>
+        <a href="/chefProfile" class="nav-btn chef-link" id="ChefProfile-btn">
+            <i class="bi bi-person-fill"></i>
+            Chef Profile
+        </a>
+        <a href="/profile" class="nav-btn user-link" id="profile-btn">
+            <i class="bi bi-person-fill"></i>
+            Profile
+        </a>
+    </div>
+
+    <div class="nav-auth">
+        <!-- Auth buttons if the user is not registered -->
+        <a href="/login" class="nav-auth-btn login" id="login-btn">Login</a>
+        <a href="/register" class="nav-auth-btn register" id="register-btn">Register</a>
+
+        <!-- Welcome phrase if it's logged -->
+        <div id="user-session-info">
+            <span>
+                <span id="user-welcome"></span>
+            </span>
+        </div>
+    </div>
+</nav>
