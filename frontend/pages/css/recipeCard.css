@@ -1,0 +1,200 @@
+/* * Recipe Card Component Styles
+ * Reusable card component displayed in recipe grids.
+ * Handles the layout for recipe image, chef info, ratings, and meta details.
+ */
+
+/* Main Card Container */
+.recipe-card {
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden; /* Ensures child elements (like images) respect the border radius */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s, box-shadow 0.2s; /* Smooth animation for hover state */
+    cursor: pointer;
+}
+
+/* Hover State: Lifts the card and increases shadow depth */
+.recipe-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* Header: User Avatar and Name */
+.recipe-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Aligns content to the left */
+    gap: 12px;
+    padding: 16px;
+    background: #fff;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Makes the image perfectly round */
+    object-fit: cover;  /* Prevents image distortion */
+    border: 2px solid #f0f0f0;
+}
+
+.user-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2c3e50;
+    /* Consider adding text-overflow ellipsis if names are very long */
+}
+
+/* Hero Image Section */
+.recipe-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover; /* Crucial: crops image to fill area without stretching */
+    transition: transform 0.3s; /* Smooth zoom effect */
+    display: block; /* Removes default inline spacing at the bottom of images */
+}
+
+/* Zoom effect on image when hovering the parent card */
+.recipe-card:hover .recipe-image {
+    transform: scale(1.05);
+}
+
+/* Footer: Title, Rating, and Meta Info */
+.recipe-footer {
+    padding: 16px;
+    display: grid;
+    /* Layout: Title takes available space (1fr), Rating takes content width (auto) */
+    grid-template-columns: 1fr auto; 
+    gap: 12px;
+}
+
+.recipe-footer h4 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+    grid-column: 1; /* First column */
+}
+
+.rating {
+    grid-column: 2; /* Second column */
+    grid-row: 1;    /* Aligned with title */
+}
+
+/* Meta Info Container (Difficulty & Time) */
+.recipe-meta {
+    grid-column: 1 / -1; /* Spans across all columns (full width) */
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap; /* Allows items to wrap on very small screens */
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* Difficulty Indicator */
+.difficulty {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* NOTE: Ensure your HTML contains SVG elements inside .difficulty for this to work */
+.difficulty svg {
+    width: 16px;
+    height: 14px;
+}
+
+/* Cooking Time Display */
+.time {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.time i {
+    font-size: 16px;
+}
+
+/* Rating Badge */
+.rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.rating i {
+    color: #f59e0b; /* Golden yellow color */
+    font-size: 18px;
+}
+
+/* Delete Button (Hidden by default in HTML, styled here) */
+.delete-recipe-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 0;
+    color: #ef4444; /* Red color */
+}
+
+.delete-recipe-btn.hidden {
+    display: none;
+}
+
+.delete-recipe-btn.visible {
+    display: flex;
+}
+
+.delete-recipe-btn:hover {
+    background-color: rgba(239, 68, 68, 0.1); /* Light red background */
+    color: #dc2626; /* Darker red text */
+}
+
+.delete-recipe-btn:active {
+    transform: scale(0.95); /* Click press effect */
+}
+
+.delete-recipe-btn i {
+    font-size: 18px;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 768px) {
+    .recipe-image {
+        height: 180px; /* Reduces image height on tablets */
+    }
+    
+    .recipe-footer h4 {
+        font-size: 16px; /* Smaller font size for titles */
+    }
+}
+
+@media (max-width: 480px) {
+    .recipe-card {
+        border-radius: 12px; /* Slightly tighter radius on mobile */
+    }
+    
+    .recipe-header {
+        padding: 12px;
+    }
+    
+    .recipe-footer {
+        padding: 12px;
+    }
+    
+    .recipe-image {
+        height: 160px; /* Further reduced height for mobile */
+    }
+}
