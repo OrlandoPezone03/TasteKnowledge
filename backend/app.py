@@ -265,7 +265,243 @@ def update_recipe_average_rating(recipe_id):
         import traceback
         traceback.print_exc()
 
-# Session info
+# API ROUTES SECTION
+# Recipe Management Routes
+@app.route("/api/recipes", methods=["GET"])
+def api_recipes():
+    try:
+        recipes = get_recipes_from_db()
+        return jsonify(recipes)
+    except Exception as e:
+        print(f"Error fetching recipes: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': f'Database error: {str(e)}'}), 500
+
+@app.route("/api/recipes", methods=["POST"])
+def api_create_recipe():
+    # Check if user is logged in
+    if 'user_id' not in session:
+        return jsonify({'error': 'Unauthorized. Please log in.'}), 401
+    
+    try:
+        data = request.get_json()
+        
+        # validate required fields
+        if not data.get('title'):
+            return jsonify({'error': 'Title is required'}), 400
+        if not data.get('image'):
+            return jsonify({'error': 'Cover image is required'}), 400
+        if not data.get('ingredients') or len(data['ingredients']) == 0:
+            return jsonify({'error': 'At least one ingredient is required'}), 400
+        if not data.get('preparationSteps') or len(data['preparationSteps']) == 0:
+            return jsonify({'error': 'At least one preparation step is required'}), 400
+        
+        # validate difficulty is between 1 and 5
+        try:
+            difficulty_val = int(data.get('difficulty', 3))
+            if difficulty_val < 1 or difficulty_val > 5:
+                return jsonify({'error': 'Difficulty must be between 1 and 5'}), 400
+        except (ValueError, TypeError):
+            return jsonify({'error': 'Invalid difficulty value'}), 400
+        
+        # get chef_id from session
+        chef_id = session.get('user_id')
+        
+        # build recipe document
+        recipe_doc = {
+            'title': data.get('title', ''),
+            'description': data.get('description', ''),
+            'image': data.get('image', ''),
+            'time': data.get('time', ''),
+            'difficulty': difficulty_val,
+            'tags': data.get('tags', []),
+            'ingredients': [],
+            'preparationSteps': data.get('preparationSteps', []),
+            'chef_id': ObjectId(chef_id),
+            'ratings': []
+        }
+        
+        # convert ingredient-id to objectid
+        for ing in data.get('ingredients', []):
+            ing_id = safe_objectid(ing.get('ingredient-id'))
+            recipe_doc['ingredients'].append({
+                'quantity': ing.get('quantity', ''),
+                'ingredientId': ing_id
+            })
+        
+        # insert recipe into database
+        result = recipes_collection.insert_one(recipe_doc)
+        inserted_id = result.inserted_id
+        
+        # add recipe id to chef's recipe list
+        chef_collection.update_one(
+            {"_id": ObjectId(chef_id)},
+            {"$push": {"recipeList": inserted_id}}
+        )
+        
+        # prepare response
+        response_recipe = recipe_doc.copy()
+        response_recipe['_id'] = str(inserted_id)
+        response_recipe['chef_id'] = str(response_recipe['chef_id'])
+        
+        # convert ingredient objectids to strings
+        for ing in response_recipe.get('ingredients', []):
+            if ing.get('ingredientId'):
+                ing['ingredientId'] = str(ing['ingredientId'])
+        
+        return jsonify({
+            'status': 'success',
+            'message': 'Recipe created successfully',
+            'recipe': response_recipe
+        }), 201
+        
+    except Exception as e:
+        print(f'Error creating recipe: {e}')
+        return jsonify({'error': f'Database error: {str(e)}'}), 500
+
+@app.route("/api/recipes/<recipe_id>", methods=["GET"])
+def api_recipe_detail(recipe_id):
+    recipe_obj = safe_objectid(recipe_id)
+    if not recipe_obj:
+        return jsonify({"error": "Invalid recipe ID"}), 400
+    
+    recipe = recipes_collection.find_one({"_id": recipe_obj})
+    if not recipe:
+        return jsonify({"error": "Recipe not found"}), 404
+    
+    enrich_recipe(recipe)
+    
+    # fetch comments for this recipe
+    comments_list = recipe.get("commentsList", [])
+    recipe["comments"] = []
+    
+    if comments_list:
+        comment_ids = [safe_objectid(cid) for cid in comments_list if safe_objectid(cid)]
+        if comment_ids:
+            comments = list(comments_collection.find(
+                {"_id": {"$in": comment_ids}},
+                sort=[("created_at", -1)]
+            ))
+            for comment in comments:
+                comment["_id"] = str(comment["_id"])
+                comment["user_id"] = str(comment["user_id"])
+                comment["recipe_id"] = str(comment["recipe_id"])
+                comment.pop("created_at", None)
+            recipe["comments"] = comments
+    
+    return jsonify(recipe)
+
+
+@app.route("/api/recipes/<recipe_id>", methods=["DELETE"])
+def api_delete_recipe(recipe_id):
+    if 'user_id' not in session:
+        return jsonify({'error': 'Unauthorized. Please log in.'}), 401
+    
+    recipe_obj = safe_objectid(recipe_id)
+    if not recipe_obj:
+        return jsonify({'error': 'Invalid recipe ID'}), 400
+    
+    recipe = recipes_collection.find_one({"_id": recipe_obj})
+    if not recipe:
+        return jsonify({'error': 'Recipe not found'}), 404
+    
+    chef_id_session = safe_objectid(session.get('user_id'))
+    if str(recipe.get('chef_id')) != str(chef_id_session):
+        return jsonify({'error': 'You can only delete your own recipes'}), 403
+    
+    recipes_collection.delete_one({"_id": recipe_obj})
+    chef_collection.update_one(
+        {"_id": chef_id_session},
+        {"$pull": {"recipeList": recipe_obj}}
+    )
+    
+    return jsonify({'status': 'success', 'message': 'Recipe deleted successfully'})
+
+
+@app.route("/api/recipes/<recipe_id>/comments", methods=["POST"])
+def api_add_comment(recipe_id):
+    # Require authentication
+    if 'user_id' not in session:
+        return jsonify({'error': 'Authentication required'}), 401
+
+    try:
+        payload = request.get_json() or {}
+    except Exception:
+        return jsonify({'error': 'Invalid JSON payload'}), 400
+
+    description = (payload.get('description') or '').strip()
+    rate = payload.get('rate', None)
+    try:
+        rate_val = int(rate) if rate is not None else None
+        if rate_val is not None and (rate_val < 1 or rate_val > 5):
+            return jsonify({'error': 'Rate must be between 1 and 5'}), 400
+    except Exception:
+        return jsonify({'error': 'Invalid rate value'}), 400
+
+    user_id = session.get('user_id')
+    role = session.get('role')
+    user_name = session.get('user_name')
+    user_avatar = session.get('user_avatar', '')
+
+    # try to fetch user metadata if not present in session
+    if not user_name or not user_avatar:
+        try:
+            coll = user_collection if role == 'user' else chef_collection
+            user_doc = coll.find_one({"_id": ObjectId(user_id)})
+            if user_doc:
+                user_name = user_doc.get('nickname') or user_doc.get('user_name') or user_doc.get('email', '')
+                user_avatar = user_doc.get('user_avatar', '')
+        except Exception:
+            user_name = user_name or 'User'
+    
+    # Apply default avatar if needed
+    user_avatar = get_user_avatar(user_avatar)
+
+    # build comment document
+    try:
+        comment_doc = {
+            'recipe_id': ObjectId(recipe_id),
+            'user_id': ObjectId(user_id),
+            'user_name': user_name or 'User',
+            'user_avatar': user_avatar or '',
+            'description': description,
+            'rate': rate_val
+        }
+    except Exception:
+        return jsonify({'error': 'Invalid recipe id or user id'}), 400
+
+    # insert and return created object (with safe serialization)
+    try:
+        res = comments_collection.insert_one(comment_doc)
+        inserted_id = getattr(res, 'inserted_id', None)
+        
+        # Update recipe to add comment ID to commentsList array
+        if inserted_id:
+            try:
+                recipes_collection.update_one(
+                    {"_id": ObjectId(recipe_id)},
+                    {"$push": {"commentsList": inserted_id}}
+                )
+            except Exception as e:
+                print(f'Error updating recipe commentsList: {e}')
+                # Continue anyway because the comment was created successfully
+            
+            # update the recipe's rating average in real time
+            update_recipe_average_rating(recipe_id)
+        
+        out = comment_doc.copy()
+        out['_id'] = str(inserted_id) if inserted_id is not None else ''
+        out['recipe_id'] = str(out['recipe_id'])
+        out['user_id'] = str(out['user_id'])
+
+        return jsonify({'status': 'success', 'comment': out}), 201
+    except Exception as e:
+        print('Error inserting comment:', e)
+        return jsonify({'error': 'Database error'}), 500
+
+
+# Session And Profile Routes
 @app.route('/api/session')
 def api_session():
     if 'user_id' not in session:
@@ -285,6 +521,91 @@ def api_session():
         'role': role,
         'followed_chefs_count': len(user.get('followedChefs', [])) if user and isinstance(user.get('followedChefs'), list) else 0
     })
+
+# Route to update user profile
+@app.route('/api/update_profile', methods=['POST'])
+def api_update_profile():
+    if 'user_id' not in session:
+        return jsonify({'error': 'Authentication required'}), 401
+
+    payload = request.get_json() or {}
+    user_name = (payload.get('user_name') or '').strip()
+    user_avatar = (payload.get('user_avatar') or '').strip()
+
+    if not user_name:
+        return jsonify({'error': 'user_name is required'}), 400
+
+    user_obj_id = safe_objectid(session.get('user_id'))
+    if not user_obj_id:
+        return jsonify({'error': 'Invalid user_id'}), 400
+
+    collection = user_collection if session.get('role') == 'user' else chef_collection
+    update_data = {'user_name': user_name, 'nickname': user_name}
+    
+    if user_avatar:
+        update_data['user_avatar'] = user_avatar
+
+    result = collection.update_one({"_id": user_obj_id}, {"$set": update_data})
+    
+    if result.matched_count == 0:
+        return jsonify({'error': 'User not found'}), 404
+
+    session['user_name'] = user_name
+    if user_avatar:
+        session['user_avatar'] = user_avatar
+
+    return jsonify({
+        'success': True,
+        'message': 'Profile updated successfully',
+        'user_name': user_name,
+        'user_avatar': user_avatar or ''
+    })
+
+# Search Routes
+@app.route('/api/ingredients/search')
+def api_ingredients_search():
+    q = request.args.get('q', '')
+    if not q:
+        return jsonify([])
+
+    # build case-insensitive regex search on possible name fields
+    regex = {"$regex": q, "$options": "i"}
+    query = {"$or": [{"name": regex}, {"ingredientName": regex}]}
+
+    try:
+        cursor = ingredients_collection.find(query, {"name": 1, "ingredientName": 1, "unit": 1}).limit(10)
+        results = []
+        for doc in cursor:
+            name = doc.get('ingredientName') or doc.get('name') or ''
+            results.append({
+                '_id': str(doc.get('_id')),
+                'name': name,
+                'unit': doc.get('unit', '')
+            })
+        return jsonify(results)
+    except Exception as e:
+        print(f"Error in /api/ingredients/search: {e}")
+        return jsonify({'error': 'server error'}), 500
+
+@app.route('/api/search')
+def api_search():
+    q = request.args.get('q', '') or ''
+    q = q.strip()
+    if not q:
+        return jsonify([])
+
+    try:
+        regex = {"$regex": q, "$options": "i"}
+        cursor = recipes_collection.find({"title": regex})
+        results = []
+        for recipe in cursor:
+            enrich_recipe(recipe)
+            results.append(recipe)
+        return jsonify(results)
+    except Exception as e:
+        print(f"Error in /api/search: {e}")
+        return jsonify({'error': 'server error'}), 500
+
     
 # HTML ROUTES SECTION
 @app.route("/")
