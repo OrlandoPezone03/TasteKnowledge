@@ -568,7 +568,7 @@ def api_ingredients_search():
     if not q:
         return jsonify([])
 
-    # build case-insensitive regex search on possible name fields
+    # non case sensitive regex search on possible name fields
     regex = {"$regex": q, "$options": "i"}
     query = {"$or": [{"name": regex}, {"ingredientName": regex}]}
 
@@ -606,6 +606,320 @@ def api_search():
         print(f"Error in /api/search: {e}")
         return jsonify({'error': 'server error'}), 500
 
+# Favorites Routes
+@app.route('/api/user/favorites')
+def api_user_favorites():
+    # verify that the user is logged in
+    if 'user_id' not in session:
+        return jsonify({'error': 'Authentication required'}), 401
+
+    user_id = session.get('user_id')
+    role = session.get('role')
+
+    try:
+        # recover the user document from the appropriate collection
+        collection = user_collection if role == 'user' else chef_collection
+        user_doc = collection.find_one({"_id": ObjectId(user_id)})
+
+        if not user_doc:
+            return jsonify({'error': 'User not found'}), 404
+
+        # Extract the favorites array
+        favorites = user_doc.get('favorites', [])
+        
+        if not favorites:
+            return jsonify([])
+
+        # convert the ids in the array to objectid
+        favorite_obj_ids = []
+        for fav_item in favorites:
+            try:
+                if isinstance(fav_item, dict):
+                    fav_id = fav_item.get('recipeId')
+                else:
+                    fav_id = fav_item
+                
+                if fav_id:
+                    oid = fav_id if isinstance(fav_id, ObjectId) else ObjectId(fav_id)
+                    favorite_obj_ids.append(oid)
+            except Exception as e:
+                # skip ids that cannot be converted
+                print(f"Skipping invalid favorite item {fav_item}: {e}")
+                continue
+
+        if not favorite_obj_ids:
+            return jsonify([])
+
+        # Execute query to fetch recipes
+        recipes_cursor = recipes_collection.find({"_id": {"$in": favorite_obj_ids}})
+        favorite_recipes = list(recipes_cursor)
+
+        # Pass each recipe through the enrich_recipe function
+        for recipe in favorite_recipes:
+            enrich_recipe(recipe)
+
+        return jsonify(favorite_recipes), 200
+
+    except Exception as e:
+        print(f"Error in /api/user/favorites: {e}")
+        return jsonify({'error': 'Server error'}), 500
+
+@app.route('/api/user/favorites/toggle', methods=['POST'])
+def api_toggle_favorite():
+    if 'user_id' not in session:
+        return jsonify({'error': 'Authentication required'}), 401
+
+    payload = request.get_json() or {}
+    recipe_id = (payload.get('recipe_id') or '').strip()
+    
+    if not recipe_id:
+        return jsonify({'error': 'recipe_id is required'}), 400
+
+    user_obj_id = safe_objectid(session.get('user_id'))
+    recipe_obj_id = safe_objectid(recipe_id)
+    
+    if not user_obj_id or not recipe_obj_id:
+        return jsonify({'error': 'Invalid user_id or recipe_id'}), 400
+
+    collection = user_collection if session.get('role') == 'user' else chef_collection
+    user_doc = collection.find_one({"_id": user_obj_id})
+    
+    if not user_doc:
+        return jsonify({'error': 'User not found'}), 404
+
+    favorites = user_doc.get('favorites', [])
+    is_in_favorites = is_item_in_list(recipe_obj_id, favorites)
+
+    if is_in_favorites:
+        new_favorites = [f for f in favorites if str(f.get('recipeId') if isinstance(f, dict) else f) != str(recipe_obj_id)]
+        collection.update_one({"_id": user_obj_id}, {"$set": {"favorites": new_favorites}})
+        is_favorited = False
+    else:
+        collection.update_one({"_id": user_obj_id}, {"$push": {"favorites": {"recipeId": recipe_obj_id}}})
+        is_favorited = True
+
+    return jsonify({'is_favorited': is_favorited})
+
+# Followed Chefs Routes
+@app.route('/api/recipes/followed')
+def api_recipes_followed():
+    # verify that the user is logged in
+    if 'user_id' not in session:
+        return jsonify({'error': 'Authentication required'}), 401
+
+    user_id = session.get('user_id')
+    role = session.get('role')
+
+    try:
+        # recover the user document from the appropriate collection
+        collection = user_collection if role == 'user' else chef_collection
+        user_doc = collection.find_one({"_id": ObjectId(user_id)})
+
+        if not user_doc:
+            return jsonify({'error': 'User not found'}), 404
+
+        # Extract the followedChefs array
+        followed_chefs = user_doc.get('followedChefs', [])
+        
+        if not followed_chefs:
+            return jsonify([])
+
+        # Extract chef IDs from followedChefs array
+        chef_ids_search = []
+        for chef_item in followed_chefs:
+            try:
+                chef_id = chef_item.get('chefId') if isinstance(chef_item, dict) else chef_item
+                if chef_id:
+                    # Try as ObjectId first then as string
+                    if isinstance(chef_id, ObjectId):
+                        chef_ids_search.append(chef_id)
+                    else:
+                        try:
+                            chef_ids_search.append(ObjectId(chef_id))
+                        except Exception:
+                            chef_ids_search.append(str(chef_id))
+            except Exception as e:
+                print(f"Skipping invalid chef item {chef_item}: {e}")
+                continue
+
+        if not chef_ids_search:
+            return jsonify([])
+
+        # fetch recipes from followed chefs
+        recipes_cursor = recipes_collection.find({"chef_id": {"$in": chef_ids_search}})
+        followed_recipes = list(recipes_cursor)
+
+        # pass each recipe through the enrich_recipe function
+        for recipe in followed_recipes:
+            enrich_recipe(recipe)
+
+        return jsonify(followed_recipes), 200
+
+    except Exception as e:
+        print(f"Error in /api/recipes/followed: {e}")
+        return jsonify({'error': 'Server error'}), 500
+
+# Chef Routes
+@app.route('/api/chefs/<chef_id>')
+def api_chef_profile(chef_id):
+    try:
+        # recover user_id from session (user viewing the profile)
+        user_id = session.get('user_id')
+        role = session.get('role')
+        
+        # check the query parameter for include_recipes
+        include_recipes = request.args.get('include_recipes', 'false').lower() == 'true'
+        
+        # search for the chef in chef_collection using the id passed in the url
+        try:
+            chef = chef_collection.find_one({"_id": ObjectId(chef_id)})
+        except Exception:
+            chef = None
+        
+        if not chef:
+            return jsonify({"error": "Chef not found"}), 404
+        
+        # recover recipes_count from recipe list
+        recipe_list = chef.get("recipeList", [])
+        recipes_count = len(recipe_list) if isinstance(recipe_list, list) else 0
+        
+        # build json object with chef's public data
+        chef_data = {
+            "_id": str(chef["_id"]),
+            "user_name": chef.get("user_name", "Unknown Chef"),
+            "nickname": chef.get("nickname", ""),
+            "user_avatar": chef.get("user_avatar", ""),
+            "bio": chef.get("bio", ""),
+            "info": chef.get("info", ""),
+            "followers": chef.get("followers", 0),
+            "recipes_count": recipes_count,
+            "is_me": False,
+            "is_followed": False
+        }
+        
+        # if include_recipes=true, recover full recipe details
+        if include_recipes and recipe_list:
+            try:
+                # convert the ids from recipelist to objectid for the query
+                recipe_ids = []
+                for recipe_id_item in recipe_list:
+                    try:
+                        if isinstance(recipe_id_item, dict):
+                            item_id = recipe_id_item.get("recipeId")
+                            if item_id:
+                                if isinstance(item_id, ObjectId):
+                                    recipe_ids.append(item_id)
+                                else:
+                                    recipe_ids.append(ObjectId(str(item_id)))
+                        elif isinstance(recipe_id_item, ObjectId):
+                            recipe_ids.append(recipe_id_item)
+                        else:
+                            recipe_ids.append(ObjectId(str(recipe_id_item)))
+                    except Exception as e:
+                        print(f"Skipping invalid recipe ID {recipe_id_item}: {e}")
+                        pass
+                
+                # recover recipes from collection using $in
+                if recipe_ids:
+                    print(f"Fetching {len(recipe_ids)} recipes for chef {chef_id}")
+                    recipes = list(recipes_collection.find({"_id": {"$in": recipe_ids}}))
+                    print(f"Found {len(recipes)} recipes")
+                    
+                    # enrich each recipe
+                    enriched_recipes = []
+                    for recipe in recipes:
+                        enrich_recipe(recipe)
+                        enriched_recipes.append(recipe)
+                    
+                    chef_data["recipes"] = enriched_recipes
+                else:
+                    print(f"No recipe IDs extracted from recipeList for chef {chef_id}")
+                    chef_data["recipes"] = []
+            except Exception as e:
+                print(f"Error fetching recipes for chef {chef_id}: {e}")
+                chef_data["recipes"] = []
+        
+        # if the user is logged in, check if is the chef and if has been followed
+        if user_id:
+            chef_data["is_me"] = (str(chef["_id"]) == str(user_id))
+            
+            # Check if user follows this chef
+            try:
+                collection = user_collection if role == 'user' else chef_collection
+                user_doc = collection.find_one({"_id": ObjectId(user_id)})
+                if user_doc:
+                    followed_chefs = user_doc.get('followedChefs', [])
+                    chef_data["is_followed"] = is_item_in_list(chef_id, followed_chefs)
+            except Exception as e:
+                print(f"Error checking followed status: {e}")
+        
+        return jsonify(chef_data), 200
+    
+    except Exception as e:
+        print(f"Error in /api/chefs/<chef_id>: {e}")
+        return jsonify({'error': 'Server error'}), 500
+
+
+@app.route('/api/chefs/<chef_id>/follow', methods=['POST'])
+def api_follow_chef(chef_id):
+    # verify that the user is logged in
+    if 'user_id' not in session:
+        return jsonify({'error': 'Authentication required'}), 401
+    
+    user_id = session.get('user_id')
+    role = session.get('role')
+    
+    try:
+        # verify that the chef exists
+        try:
+            chef = chef_collection.find_one({"_id": ObjectId(chef_id)})
+        except Exception:
+            chef = None
+        
+        if not chef:
+            return jsonify({'error': 'Chef not found'}), 404
+        
+        # recover the user document from the appropriate collection
+        collection = user_collection if role == 'user' else chef_collection
+        user_doc = collection.find_one({"_id": ObjectId(user_id)})
+        
+        if not user_doc:
+            return jsonify({'error': 'User not found'}), 404
+        
+        # Get current followedChefs list
+        followed_chefs = user_doc.get('followedChefs', [])
+        if not isinstance(followed_chefs, list):
+            followed_chefs = []
+        
+        # Check if currently followed
+        is_currently_followed = is_item_in_list(chef_id, followed_chefs)
+        
+        # Toggle: if followed, remove; if not, add
+        if is_currently_followed:
+            # Remove from followedChefs
+            new_followed = []
+            for item in followed_chefs:
+                check_id = item.get('chefId') if isinstance(item, dict) else item
+                if str(check_id) != str(chef_id):
+                    new_followed.append(item)
+            collection.update_one(
+                {"_id": ObjectId(user_id)},
+                {"$set": {"followedChefs": new_followed}}
+            )
+            is_followed = False
+        else:
+            # Add to followedChefs (as string for simplicity)
+            collection.update_one(
+                {"_id": ObjectId(user_id)},
+                {"$push": {"followedChefs": str(chef_id)}}
+            )
+            is_followed = True
+        
+        return jsonify({'is_followed': is_followed}), 200
+    
+    except Exception as e:
+        print(f"Error in /api/chefs/<chef_id>/follow: {e}")
+        return jsonify({'error': 'Server error'}), 500
     
 # HTML ROUTES SECTION
 @app.route("/")
