@@ -1,0 +1,290 @@
+/* Root for defining colors */
+:root {
+    --primary-green: #1eb36a;
+    --primary-green-hover: #169658;
+    --dark-blue: #2E3E5C;
+    --light-gray: #f5f5f5;
+    --border-gray: #e0e0e0;
+    --text-dark: #2c3e50;
+    --text-light: #999;
+    --danger-red: #e74c3c;
+    --danger-red-hover: #c0392b;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Roboto, sans-serif;
+}
+
+body {
+    background: #fff;
+}
+
+/* Navbar */
+.header {
+    background: white;
+    padding: 15px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+}
+
+.logo img {
+    height: 60px;
+}
+
+.app-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.profile-section {
+    width: 100%;
+    padding: 30px 0;
+    margin-top: 30px;
+}
+
+.profile-header {
+    text-align: center;
+    padding-bottom: 30px;
+    border-bottom: 1px solid var(--border-gray);
+}
+
+.profile-avatar-large {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid white;
+    object-fit: cover;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    margin: 20px auto;
+}
+
+.profile-name {
+    color: var(--text-dark);
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.stats-block {
+    margin-top: 10px;
+}
+.stats-count {
+    font-size: 18px;
+    font-weight: 700;
+}
+.stats-label {
+    font-size: 13px;
+    color: var(--text-light); 
+}
+
+.settings-btn {
+    color: var(--text-dark);
+    position: fixed;
+    top: 110px;
+    right: 100px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 200;
+}
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    justify-content: center; align-items: center;
+    backdrop-filter: blur(3px);
+}
+
+.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: white;
+    width: 300px;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Profile edit form */
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.form-input {
+    padding: 8px 10px;
+    border: 1px solid var(--border-gray);
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: system-ui, sans-serif;
+    transition: border-color 0.2s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 2px rgba(30, 179, 106, 0.1);
+}
+
+/* ACTION BUTTONS */
+.save-btn {
+    padding: 10px;
+    background: var(--primary-green);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.save-btn:hover {
+    background: var(--primary-green-hover); 
+}
+.save-btn:active {
+    transform: scale(0.98);
+}
+
+/* Press effect */
+.save-btn:disabled {
+    background: #999;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.logout-btn {
+    width: 100%; padding: 10px;
+    background: var(--danger-red);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.logout-btn:hover {
+    background: var(--danger-red-hover);
+}
+
+/* Favorites section */
+.favorites-section {
+    width: 100%;
+    padding: 25px 40px;
+}
+
+.favorites-title {
+    color: var(--text-dark);
+    margin-bottom: 25px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 600;
+}
+.favorites-title .bi-heart-fill {
+    color: #e74c3c;
+}
+
+/* Responsive grid */
+.favorites-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 25px;
+}
+
+/* Message if there are no favorites */
+.empty-state {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    color: var(--text-light);
+    font-size: 16px;
+    font-weight: 500;
+    padding: 40px;
+    text-align: center;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    body {
+        padding-bottom: 80px;
+    }
+    .header {
+        padding: 10px 15px;
+    }
+    .logo img {
+        height: 45px;
+    }
+
+    .profile-section, .favorites-section {
+        padding: 0 15px;
+    }
+    .profile-avatar-large {
+        width: 80px; height: 80px;
+    }
+    
+    .favorites-title {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+    /* Smaller columns on mobile */
+    .favorites-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+    }
+
+    /* Repositioning settings button for mobile */
+    .settings-btn {
+        top: 85px; right: 20px;
+        font-size: 24px;
+        width: 50px; height: 50px;
+    }
+}
