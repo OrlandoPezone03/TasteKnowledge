@@ -117,6 +117,33 @@
         </div>
     </div>
 
+    <!-- ChefBot button -->
+    <div class="chefbot-container">
+        <div class="chefbot-badge">Need help?</div>
+        <div class="chefbot-circle" title="Ask ChefBot for help" role="button" tabindex="0">
+            <img src="/assets/chefBotIcon.svg" alt="chefBotIcon">
+        </div>
+    </div>
+
+    <!-- ChefBot Modal -->
+    <div id="chefbot-modal" class="modal hidden" aria-hidden="true">
+        <div class="modal-header">
+            <h3>Chef Bot Assistant</h3>
+            <button class="modal-close" aria-label="Close"><i class="bi bi-x"></i></button>
+        </div>
+
+        <div class="modal-body">
+            <div class="chat-container" id="chefbotModalChat">
+                <!-- Chat messages will be appended here by client-side JS. -->
+            </div>
+
+            <div class="input-container">
+                <textarea id="chefbotModalInput" placeholder="Ask something about the recipe..." rows="1"></textarea>
+                <button id="chefbotModalSend">Send</button>
+            </div>
+        </div>
+    </div>
+
     <!-- TODO: Add chefBot.js and recipePage.js -->
 </body>
 </html>

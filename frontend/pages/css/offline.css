@@ -1,0 +1,89 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Roboto, sans-serif;
+}
+
+body {
+    background-color: #16a95a;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+}
+
+.offline-container {
+    background: white;
+    border-radius: 12px;
+    padding: 40px 30px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+}
+
+.offline-icon i{
+    font-size: 64px;
+    margin-bottom: 20px;
+    color: red;
+}
+
+h1 {
+    color: #1eb36a;
+    margin-bottom: 15px;
+    font-size: 28px;
+}
+
+p {
+    color: #666;
+    margin-bottom: 10px;
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+.offline-message {
+    background-color: #f0f0f0;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 4px;
+    text-align: left;
+}
+
+.offline-message strong {
+    color: #1eb36a;
+}
+
+.offline-message p {
+    margin-top: 8px;
+}
+
+.button-group {
+    margin-top: 25px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+button {
+    background-color: #1eb36a;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #16a95a;
+}
+
+button.secondary {
+    background-color: #ccc;
+    color: #333;
+}
+
+button.secondary:hover {
+    background-color: #bbb;
+}
