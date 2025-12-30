@@ -95,14 +95,14 @@ body {
 
 .settings-btn {
     color: var(--text-dark);
-    position: fixed;
+    position: absolute;
     top: 110px;
     right: 100px;
     background: none;
     border: none;
     font-size: 28px;
     cursor: pointer;
-    z-index: 200;
+    z-index: 50;
 }
 
 /* Modal */
