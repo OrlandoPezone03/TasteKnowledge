@@ -45,6 +45,15 @@ body {
     width: auto;
 }
 
+/* Tabs container */
+.tabs-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0;
+    padding: 0 20px;
+}
+
 /* Recipe filter tabs */
 .filter-tabs {
     max-width: 1200px;
