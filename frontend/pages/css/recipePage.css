@@ -1,0 +1,797 @@
+/* Colors and base styles */
+:root {
+    --primary-green: #2ecc71;
+    --primary-green-dark: #27ae60;
+    --text-dark: #2c3e50;
+    --text-medium: #555;
+    --text-light: #999;
+    --bg-body: #dcdde1;
+    --bg-card: #ffffff;
+    --bg-sidebar: #f8f9fa;
+    --border-light: #eee;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: Roboto, sans-serif;
+}
+
+body {
+    background-color: var(--bg-body);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px 20px;
+    flex-direction: column;
+}
+
+/* Main container */
+.app-container {
+    background-color: var(--bg-card);
+    width: 100%;
+    max-width: 1500px;
+    min-height: 85vh;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* Recipe image hero section */
+.hero {
+    position: relative;
+    height: 400px;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 30px;
+    left: 40px;
+    right: 40px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.icon-btn {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(4px);
+    border: none;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    font-size: 22px;
+    color: var(--text-dark);
+    cursor: pointer;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 1;
+}
+
+.icon-btn i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.icon-btn:hover {
+    background: lightgray;
+}
+
+/* Two-column layout */
+.content-grid {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    flex: 1;
+}
+
+/* Left sidebar */
+.sidebar {
+    background-color: var(--bg-sidebar);
+    padding: 40px;
+    border-right: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+h1 {
+    margin: 0 0 10px 0;
+    color: var(--text-dark);
+    font-size: 34px;
+    font-weight: 700;
+}
+
+/* Chef info */
+.author-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+.avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    margin-right: 12px;
+    border: 2px solid white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.author-name {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 16px;
+}
+
+.meta-info {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px;
+    color: var(--text-medium);
+    font-size: 14px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-light);
+    font-weight: 500;
+}
+
+.description {
+    color: var(--text-medium);
+    line-height: 1.7;
+    font-size: 15px;
+}
+
+/* Nutrition facts */
+.nutrition-widget {
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+}
+
+.nutrition-widget h4 {
+    margin: 0 0 20px 0;
+    color: var(--text-dark);
+    font-size: 16px;
+}
+
+.nutrition-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.donut-chart {
+    width: 86px;
+    height: 86px;
+    border-radius: 50%;
+    background: conic-gradient(#f1c40f 0% 70%, #eee 70% 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.donut-inner {
+    width: 70px;
+    height: 70px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.cal-count {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text-dark);
+}
+
+.cal-label {
+    font-size: 10px;
+    color: var(--text-light);
+    text-transform: uppercase;
+}
+
+.nutri-list div {
+    font-size: 13px;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+/* Right content area */
+.main-content {
+    padding: 40px 50px;
+    background-color: white;
+}
+
+/* Tab navigation */
+.tabs {
+    display: flex;
+    gap: 25px;
+    margin-bottom: 35px;
+    border-bottom: 2px solid var(--border-light);
+}
+
+.tab-btn {
+    padding: 15px 5px;
+    border: none;
+    background: transparent;
+    font-weight: 700;
+    color: var(--text-light);
+    font-size: 16px;
+    cursor: pointer;
+    position: relative;
+    top: 2px;
+}
+
+.tab-btn.active {
+    color: var(--primary-green);
+    border-bottom: 3px solid var(--primary-green);
+}
+
+/* Dynamic sections */
+.section-view {
+    display: none;
+}
+
+.section-view.active {
+    display: block;
+}
+
+/* Ingredients grid */
+.ingredient-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 35px;
+}
+
+.ingredient-item {
+    display: flex;
+    align-items: center;
+    padding: 18px;
+    background: #f9f9f9;
+    border-radius: 16px;
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+.check-circle {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #d4efdf;
+    color: var(--primary-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-size: 14px;
+}
+
+/* Science section */
+.science-box {
+    background: #f0f8ff;
+    padding: 30px;
+    border-radius: 20px;
+    border-left: 6px solid #3498db;
+}
+
+.science-box h3 {
+    color: #2980b9;
+    margin-top: 0;
+}
+
+.science-box ul,
+.science-box p {
+    color: var(--text-medium);
+    line-height: 1.6;
+}
+
+/* Comments section */
+.comments-section {
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border-light);
+}
+
+.comment-input-area {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 50px;
+}
+
+.comment-input {
+    flex: 1;
+    padding: 15px 20px;
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    font-size: 15px;
+}
+
+.comment-input:focus {
+    outline: none;
+    border-color: var(--primary-green);
+}
+
+.send-btn {
+    padding: 0 30px;
+    background: var(--primary-green);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.send-btn:hover {
+    background: var(--primary-green-dark);
+}
+
+.comment-card {
+    background: white;
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 15px;
+}
+
+.comment-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+/* ChefBot floating button */
+.chefbot-container {
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    pointer-events: none;
+}
+
+/* Badge text */
+.chefbot-badge {
+    background: var(--primary-green);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    pointer-events: auto;
+}
+
+/* Floating circular button */
+.chefbot-circle {
+    width: 72px;
+    height: 72px;
+    background: var(--primary-green);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(46, 204, 113, 0.4);
+    pointer-events: auto;
+}
+
+/* Hover effect */
+.chefbot-circle:hover {
+    background: var(--primary-green-dark);
+    box-shadow: 0 15px 35px rgba(39, 174, 96, 0.6);
+}
+
+.chefbot-icon-svg {
+    width: 36px;
+    height: 36px;
+    fill: none;
+    stroke: white;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Mobile responsive */
+@media (max-width: 950px) {
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--border-light);
+    }
+
+    .app-container {
+        height: auto;
+        border-radius: 0;
+        max-width: 100%;
+        margin: 0;
+        min-height: 100vh;
+        box-shadow: none;
+    }
+
+    body {
+        padding: 0;
+    }
+
+    .chefbot-container {
+        bottom: 25px;
+        right: 25px;
+    }
+
+    .chefbot-circle {
+        width: 64px;
+        height: 64px;
+    }
+
+    .chefbot-badge {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+}
+
+h3 {
+    color: var(--text-dark);
+}
+
+.recipe-image {
+    width: 100%;
+    border-radius: 16px;
+    height: 260px;
+    object-fit: cover;
+}
+
+.hero .recipe-hero-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    display: block;
+}
+
+.rating-value {
+    color: var(--primary-green);
+    font-weight: bold;
+}
+
+.prep-step {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.step-number {
+    background: var(--text-dark);
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-weight: bold;
+}
+
+.step-content p {
+    margin: 0;
+}
+
+.step-title {
+    margin: 0 0 5px 0;
+    font-weight: bold;
+    color: var(--text-dark);
+}
+
+.step-description {
+    margin: 0;
+    font-size: 15px;
+    color: #555;
+    line-height: 1.5;
+}
+
+.step-image {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 420px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-top: 12px;
+    display: block;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+@media (max-width: 600px) {
+    .step-image {
+        max-height: 280px;
+        border-radius: 10px;
+    }
+}
+
+.nutrient-protein {
+    color: #e91e63;
+}
+
+.nutrient-carbs {
+    color: #fbc02d;
+}
+
+.nutrient-fats {
+    color: #009688;
+}
+
+.comment-author {
+    font-weight: bold;
+    color: var(--text-dark);
+}
+
+.comment-time {
+    font-size: 12px;
+    color: var(--text-light);
+}
+
+.comment-header-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+/* Autocomplete suggestions */
+.ingredient-input-wrapper {
+    position: relative;
+}
+
+.suggestions-list {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    width: 100%;
+    max-height: 280px;
+    overflow-y: auto;
+    background: white;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    z-index: 20000;
+    padding: 6px 0;
+}
+
+.suggestion-item {
+    padding: 10px 14px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-dark);
+}
+.suggestion-item:hover {
+    background: #f5f7fa;
+}
+
+/* ChefBot modal */
+.modal.hidden {
+    display: none;
+}
+
+.modal {
+    position: fixed;
+    right: 40px;
+    bottom: 120px;
+    width: 500px;
+    max-width: calc(100% - 40px);
+    max-height: 600px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.25);
+    z-index: 100000;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-light);
+    background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,250,250,0.98));
+}
+.modal-header h3 {
+    margin: 0;
+    font-size: 16px;
+    color: var(--text-dark);
+}
+.modal-close {
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-medium);
+}
+
+.modal-body { display: flex; flex-direction: column; }
+.modal .chat-container {
+    padding: 12px 16px;
+    height: 400px;
+    overflow-y: auto;
+    background: #fafafa;
+}
+
+.modal .message {
+    margin-bottom: 12px;
+}
+.modal .message .message-content {
+    padding: 10px 12px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+    color: var(--text-dark);
+}
+
+.modal .input-container {
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+    border-top: 1px solid var(--border-light);
+    background: white;
+    align-items: flex-end;
+}
+.modal textarea {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    resize: none;
+    font-size: 14px;
+}
+.modal button#chefbotModalSend {
+    background: var(--primary-green);
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+@media (max-width: 950px) {
+    .modal {
+        right: 20px;
+        bottom: 60px;
+        width: 400px;
+    }
+    .modal .chat-container {
+        height: 400px;
+    }
+}
+
+.comment-text {
+    color: #555;
+    line-height: 1.4;
+}
+
+/* Comment form + rating stars */
+.comment-form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+.login-prompt {
+    color: var(--text-medium);
+    font-size: 14px;
+}
+.comment-form {
+    display: block;
+}
+.rating-stars {
+    display: inline-flex;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+.rating-stars .star {
+    font-size: 20px;
+    color: #bbb;
+    cursor: pointer;
+    user-select: none;
+}
+
+.rating-stars .star:hover,
+.rating-stars .star.hover,
+.rating-stars .star.active {
+    color: #f5c542;
+    transform: scale(1.08);
+}
+.comment-input-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.comment-input-row .comment-input {
+    flex: 1;
+}
+.comment-input-row .send-btn {
+    padding: 10px 18px;
+    align-self: stretch;
+}
+
+/* Delete comment button */
+.comment-delete-btn {
+    background: transparent;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px 8px;
+    margin-left: 8px;
+    opacity: 0.6;
+}
+.comment-delete-btn:hover {
+    opacity: 1;
+    color: #e74c3c;
+}
+
+/* Error messages for comment form */
+.rating-error-message {
+    color: #e74c3c;
+    font-size: 13px;
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    background-color: #fadbd8;
+    border-left: 3px solid #e74c3c;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.duplicate-comment-message {
+    color: #e74c3c;
+    font-size: 13px;
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    background-color: #fadbd8;
+    border-left: 3px solid #e74c3c;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+/* Science section items */
+.science-item {
+    background: #fbfdff;
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+}
+
+.science-item + .science-item {
+    margin-top: 6px;
+}
+.science-item h4 {
+    margin: 0 0 8px 0;
+    color: var(--text-dark);
+    font-weight: 700;
+    font-size: 16px;
+}
+.science-item p {
+    margin: 0;
+    color: var(--text-medium);
+    line-height: 1.6;
+    font-size: 14px;
+}
