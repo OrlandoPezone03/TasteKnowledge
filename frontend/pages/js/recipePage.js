@@ -469,12 +469,21 @@ function updateStarsDisplay() {
     }
 }
 
-// Delete comment from recipe (with confirmation)
+// Delete comment from recipe (with modal confirmation)
 async function deleteComment(recipeId, commentId) {
-    if (!confirm('Are you sure you want to delete this comment?')) {
-        return;
-    }
+    // Store the IDs for the modal buttons
+    window.pendingDelete = { recipeId, commentId };
+    
+    // Show the modal
+    const modal = document.getElementById('delete-comment-modal');
+    modal.classList.remove('hidden');
+    modal.setAttribute('aria-hidden', 'false');
+}
 
+// Confirm delete from modal
+async function confirmDeleteComment() {
+    const { recipeId, commentId } = window.pendingDelete;
+    
     try {
         const response = await fetch(`/api/recipes/${recipeId}/comments/${commentId}`, {
             method: 'DELETE',
@@ -502,7 +511,23 @@ async function deleteComment(recipeId, commentId) {
     } catch (error) {
         console.error('Error deleting comment:', error);
         alert(`Error deleting comment: ${error.message}`);
+    } finally {
+        // Hide the modal
+        closeDeleteModal();
     }
+}
+
+// Cancel delete from modal
+function cancelDeleteComment() {
+    closeDeleteModal();
+}
+
+// Close the delete modal
+function closeDeleteModal() {
+    const modal = document.getElementById('delete-comment-modal');
+    modal.classList.add('hidden');
+    modal.setAttribute('aria-hidden', 'true');
+    window.pendingDelete = null;
 }
 
 // Render a single comment with user info and rating
@@ -742,5 +767,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const bookmarkBtn = document.querySelector('.bookmark-btn');
     if (bookmarkBtn) {
         bookmarkBtn.addEventListener('click', toggleBookmark);
+    }
+
+    // Setup delete comment modal listeners
+    const cancelBtn = document.getElementById('cancel-delete-btn');
+    const confirmBtn = document.getElementById('confirm-delete-btn');
+    const modalClose = document.querySelector('#delete-comment-modal .modal-close');
+    
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', cancelDeleteComment);
+    }
+    if (confirmBtn) {
+        confirmBtn.addEventListener('click', confirmDeleteComment);
+    }
+    if (modalClose) {
+        modalClose.addEventListener('click', closeDeleteModal);
     }
 });
