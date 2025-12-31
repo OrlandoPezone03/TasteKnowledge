@@ -311,6 +311,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                         });
 
                         if (response.ok) {
+                            // Clear localStorage to prevent state inconsistency
+                            localStorage.clear();
                             // redirect to home after logout
                             window.location.href = "/";
                         } else {

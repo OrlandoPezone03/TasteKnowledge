@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, session, request
+from flask import Flask, render_template, jsonify, session, request, redirect, url_for
 from flask.json.provider import DefaultJSONProvider
 import os
 from bson.objectid import ObjectId
@@ -958,7 +958,12 @@ def api_follow_chef(chef_id):
     except Exception as e:
         print(f"Error in /api/chefs/<chef_id>/follow: {e}")
         return jsonify({'error': 'Server error'}), 500
-    
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('home'))
+
 # HTML ROUTES SECTION
 @app.route("/")
 def home():
