@@ -501,6 +501,44 @@ def api_add_comment(recipe_id):
         return jsonify({'error': 'Database error'}), 500
 
 
+@app.route("/api/recipes/<recipe_id>/comments/<comment_id>", methods=["DELETE"])
+def api_delete_comment(recipe_id, comment_id):
+    # Require authentication
+    if 'user_id' not in session:
+        return jsonify({'error': 'Authentication required'}), 401
+
+    try:
+        user_id = session.get('user_id')
+        role = session.get('role')
+        
+        # Find the comment
+        comment = comments_collection.find_one({"_id": ObjectId(comment_id)})
+        if not comment:
+            return jsonify({'error': 'Comment not found'}), 404
+        
+        # Check if user owns the comment or is a chef/admin
+        if str(comment['user_id']) != user_id and role != 'chef':
+            return jsonify({'error': 'Unauthorized to delete this comment'}), 403
+        
+        # Delete the comment
+        comments_collection.delete_one({"_id": ObjectId(comment_id)})
+        
+        # Remove comment ID from recipe's commentsList
+        recipes_collection.update_one(
+            {"_id": ObjectId(recipe_id)},
+            {"$pull": {"commentsList": ObjectId(comment_id)}}
+        )
+        
+        # Update recipe's average rating
+        update_recipe_average_rating(recipe_id)
+        
+        return jsonify({'status': 'success'}), 200
+        
+    except Exception as e:
+        print('Error deleting comment:', e)
+        return jsonify({'error': 'Database error'}), 500
+
+
 # Session And Profile Routes
 @app.route('/api/session')
 def api_session():
