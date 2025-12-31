@@ -133,6 +133,21 @@ body {
     gap: 10px;
 }
 
+.icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+    color: var(--text-dark);
+    font-size: 18px;
+}
+
+.icon-btn:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
 /* Profile edit form */
 .profile-form {
     display: flex;
