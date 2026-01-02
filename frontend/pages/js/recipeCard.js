@@ -2,9 +2,9 @@
 var RecipeCard = {
   // Create difficulty indicators using fire icons
   createDifficulty: function (difficulty) {
-    var level = difficulty || 1;
-    var stars = "";
-    var i;
+    let level = difficulty || 1;
+    let stars = "";
+    let i;
 
     for (i = 0; i < 5; i++) {
       if (i < level) {
@@ -21,7 +21,7 @@ var RecipeCard = {
     e.stopPropagation();
     e.preventDefault();
 
-    var confirmDelete = confirm('Delete "' + title + '"?');
+    let confirmDelete = confirm('Delete "' + title + '"?');
     if (!confirmDelete) {
       return;
     }
@@ -64,29 +64,29 @@ var RecipeCard = {
       return document.createElement("div");
     }
 
-    var recipeId = recipe._id;
-    var imageSrc = recipe.image;
-    var userAvatar = recipe.user_avatar;
-    var userName = recipe.user_name;
-    var title = recipe.title;
-    var rating = recipe.rating || "0";
-    var time = recipe.time;
-    var difficulty = recipe.difficulty;
+    let recipeId = recipe._id;
+    let imageSrc = recipe.image;
+    let userAvatar = recipe.user_avatar;
+    let userName = recipe.user_name;
+    let title = recipe.title;
+    let rating = recipe.rating || "0";
+    let time = recipe.time;
+    let difficulty = recipe.difficulty;
 
     // Create main card container
-    var card = document.createElement("div");
+    let card = document.createElement("div");
     card.className = "recipe-card";
 
     // Create header with avatar and name
-    var header = document.createElement("div");
+    let header = document.createElement("div");
     header.className = "recipe-header";
 
-    var avatarImg = document.createElement("img");
+    let avatarImg = document.createElement("img");
     avatarImg.src = userAvatar;
     avatarImg.alt = userName;
     avatarImg.className = "user-avatar";
 
-    var nameSpan = document.createElement("span");
+    let nameSpan = document.createElement("span");
     nameSpan.className = "user-name";
     nameSpan.textContent = userName;
 
@@ -94,7 +94,7 @@ var RecipeCard = {
     header.appendChild(nameSpan);
 
     // Create delete button (hidden by default)
-    var deleteBtn = document.createElement("button");
+    let deleteBtn = document.createElement("button");
     deleteBtn.className = "delete-recipe-btn hidden";
     deleteBtn.title = "Delete recipe";
     deleteBtn.innerHTML = '<i class="bi bi-trash"></i>';
@@ -104,7 +104,7 @@ var RecipeCard = {
       deleteBtn.classList.add("visible");
     }
 
-    var self = this;
+    let self = this;
     deleteBtn.addEventListener("click", function (e) {
       self.handleDeleteRecipe(e, recipeId, title, card);
     });
@@ -112,31 +112,31 @@ var RecipeCard = {
     header.appendChild(deleteBtn);
 
     // Create recipe image
-    var recipeImg = document.createElement("img");
+    let recipeImg = document.createElement("img");
     recipeImg.src = imageSrc;
     recipeImg.alt = title;
     recipeImg.className = "recipe-image";
 
     // Create footer with title, rating, and meta info
-    var footer = document.createElement("div");
+    let footer = document.createElement("div");
     footer.className = "recipe-footer";
 
-    var titleH4 = document.createElement("h4");
+    let titleH4 = document.createElement("h4");
     titleH4.textContent = title;
 
-    var ratingDiv = document.createElement("div");
+    let ratingDiv = document.createElement("div");
     ratingDiv.className = "rating";
     ratingDiv.innerHTML =
       '<i class="bi bi-star-fill"></i><span>' + rating + "</span>";
 
-    var metaDiv = document.createElement("div");
+    let metaDiv = document.createElement("div");
     metaDiv.className = "recipe-meta";
 
-    var difficultyDiv = document.createElement("div");
+    let difficultyDiv = document.createElement("div");
     difficultyDiv.className = "difficulty";
     difficultyDiv.innerHTML = this.createDifficulty(difficulty);
 
-    var timeDiv = document.createElement("div");
+    let timeDiv = document.createElement("div");
     timeDiv.className = "time";
     timeDiv.innerHTML =
       '<i class="bi bi-clock"></i><span>' + (time || "--") + "</span>";

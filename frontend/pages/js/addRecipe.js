@@ -63,9 +63,7 @@ function showStep(step) {
             nextBtn.style.display = 'flex';
             nextBtn.innerHTML = `
                 Next Step
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
+                <i class="bi bi-arrow-right"></i>
             `;
         }
         
@@ -80,9 +78,7 @@ function showStep(step) {
             nextBtn.style.display = 'flex';
             nextBtn.innerHTML = `
                 Publish Recipe
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
+                <i class="bi bi-arrow-right"></i>
             `;
         }
     }
@@ -241,10 +237,7 @@ function handleConfirm() {
     ingredientsList.innerHTML = `
         <div class="ingredient-row">
             <button type="button" class="btn-delete" title="Remove ingredient">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="3 6 5 6 21 6"></polyline>
-                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                </svg>
+                <i class="bi bi-trash"></i>
             </button>
             <input type="text" class="ing-name-input" placeholder="Ingredient">
             <input type="text" class="ing-qty-input" placeholder="Quantity">
@@ -258,10 +251,7 @@ function handleConfirm() {
     stepsList.innerHTML = `
         <div class="step-card">
             <button type="button" class="btn-delete-step" title="Remove step">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="3 6 5 6 21 6"></polyline>
-                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                </svg>
+                <i class="bi bi-trash"></i>
             </button>
             
             <div class="step-card-header">
@@ -271,10 +261,7 @@ function handleConfirm() {
             
             <div class="step-card-footer">
                 <button class="btn-photo-small">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                        <circle cx="12" cy="13" r="4"/>
-                    </svg>
+                    <i class="bi bi-camera"></i>
                     Add Photo for Step 1
                 </button>
             </div>
@@ -667,10 +654,7 @@ function renumberSteps() {
         const photoBtn = card.querySelector('.btn-photo-small');
         if(photoBtn) {
             photoBtn.innerHTML = `
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                    <circle cx="12" cy="13" r="4"/>
-                </svg>
+                <i class="bi bi-camera"></i>
                 Add Photo for Step ${num}
             `;
         }

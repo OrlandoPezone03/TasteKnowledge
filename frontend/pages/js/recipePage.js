@@ -158,28 +158,28 @@ function populateRecipePage(recipe) {
     document.getElementById('recipe-fats').textContent = `Fats: ${fatsVal === null ? 0 : fatsVal} g`;
 
     // Update donut chart with nutrition percentages
-    var donutEl = document.querySelector('.donut-chart');
+    let donutEl = document.querySelector('.donut-chart');
     if (donutEl) {
-        var p = protVal || 0;
-        var c = carbsVal || 0;
-        var f = fatsVal || 0;
-        var totalGrams = p + c + f;
+        let p = protVal || 0;
+        let c = carbsVal || 0;
+        let f = fatsVal || 0;
+        let totalGrams = p + c + f;
 
         if (totalGrams <= 0) {
             donutEl.style.background = 'conic-gradient(#eee 0% 100%)';
         } else {
-            var proteinColor = '#e91e63';  // pink/red
-            var carbsColor = '#fbc02d';    // yellow
-            var fatsColor = '#009688';     // teal/green
+            let proteinColor = '#e91e63';  // pink/red
+            let carbsColor = '#fbc02d';    // yellow
+            let fatsColor = '#009688';     // teal/green
 
-            var pctProtein = Math.round((p / totalGrams) * 100);
-            var pctCarbs = Math.round((c / totalGrams) * 100);
-            var pctFats = 100 - pctProtein - pctCarbs;
+            let pctProtein = Math.round((p / totalGrams) * 100);
+            let pctCarbs = Math.round((c / totalGrams) * 100);
+            let pctFats = 100 - pctProtein - pctCarbs;
 
-            var endProtein = pctProtein;
-            var endCarbs = pctProtein + pctCarbs;
+            let endProtein = pctProtein;
+            let endCarbs = pctProtein + pctCarbs;
 
-            var gradient = 'conic-gradient(' + 
+            let gradient = 'conic-gradient(' + 
                 proteinColor + ' 0% ' + endProtein + '%, ' + 
                 carbsColor + ' ' + endProtein + '% ' + endCarbs + '%, ' + 
                 fatsColor + ' ' + endCarbs + '% 100%)';
@@ -223,7 +223,7 @@ function populateRecipePage(recipe) {
 
 // Populate existing comments on recipe
 function populateComments(comments) {
-    var commentList = document.getElementById('comment-list');
+    let commentList = document.getElementById('comment-list');
     if (!commentList || !comments || !Array.isArray(comments)) return;
 
     commentList.innerHTML = '';
@@ -233,8 +233,8 @@ function populateComments(comments) {
         return;
     }
 
-    for (var i = 0; i < comments.length; i++) {
-        var comment = comments[i];
+    for (let i = 0; i < comments.length; i++) {
+        let comment = comments[i];
         var commentEl = renderComment(comment);
         commentList.appendChild(commentEl);
 
@@ -250,7 +250,7 @@ function populateComments(comments) {
 
 // Populate ingredients list
 function populateIngredients(ingredients) {
-    var ingredientList = document.getElementById('ingredient-list');
+    let ingredientList = document.getElementById('ingredient-list');
     ingredientList.innerHTML = '';
 
     if (!ingredients || ingredients.length === 0) {
@@ -258,15 +258,15 @@ function populateIngredients(ingredients) {
         return;
     }
 
-    for (var i = 0; i < ingredients.length; i++) {
-        var ing = ingredients[i];
+    for (let i = 0; i < ingredients.length; i++) {
+        let ing = ingredients[i];
         
-        var div = document.createElement('div');
+        let div = document.createElement('div');
         div.className = 'ingredient-item';
 
-        var name = ing.name || ing.ingredient || 'Unknown';
-        var quantity = ing.quantity || '';
-        var unit = ing.unit || '';
+        let name = ing.name || ing.ingredient || 'Unknown';
+        let quantity = ing.quantity || '';
+        let unit = ing.unit || '';
 
         div.innerHTML = '<div class="check-circle"><i class="bi bi-check"></i></div>' +
             '<span>' + name + ' - ' + quantity + ' ' + unit + '</span>';
@@ -277,7 +277,7 @@ function populateIngredients(ingredients) {
 
 // Populate preparation steps
 function populateSteps(steps) {
-    var stepsContainer = document.getElementById('steps-container');
+    let stepsContainer = document.getElementById('steps-container');
     stepsContainer.innerHTML = '';
 
     if (!steps || steps.length === 0) {
@@ -285,29 +285,29 @@ function populateSteps(steps) {
         return;
     }
 
-    for (var i = 0; i < steps.length; i++) {
-        var step = steps[i];
-        var isObject = step && typeof step === 'object';
+    for (let i = 0; i < steps.length; i++) {
+        let step = steps[i];
+        let isObject = step && typeof step === 'object';
         
-        var number = (isObject && step.stepNumber) ? step.stepNumber : (i + 1);
-        var description = isObject ? (step.description || '') : (step || '');
-        var imageUrl = isObject ? (step.image || null) : null;
+        let number = (isObject && step.stepNumber) ? step.stepNumber : (i + 1);
+        let description = isObject ? (step.description || '') : (step || '');
+        let imageUrl = isObject ? (step.image || null) : null;
 
-        var div = document.createElement('div');
+        let div = document.createElement('div');
         div.className = 'prep-step';
 
-        var numDiv = document.createElement('div');
+        let numDiv = document.createElement('div');
         numDiv.className = 'step-number';
         numDiv.textContent = number;
 
-        var contentDiv = document.createElement('div');
+        let contentDiv = document.createElement('div');
         contentDiv.className = 'step-content';
 
-        var titleP = document.createElement('p');
+        let titleP = document.createElement('p');
         titleP.className = 'step-title';
         titleP.textContent = 'Step ' + number;
 
-        var descP = document.createElement('p');
+        let descP = document.createElement('p');
         descP.className = 'step-description';
         descP.textContent = description || 'No description';
 
@@ -315,7 +315,7 @@ function populateSteps(steps) {
         contentDiv.appendChild(descP);
 
         if (imageUrl) {
-            var imgEl = document.createElement('img');
+            let imgEl = document.createElement('img');
             imgEl.className = 'step-image';
             imgEl.src = imageUrl;
             imgEl.alt = 'Step ' + number + ' image';
@@ -330,7 +330,7 @@ function populateSteps(steps) {
 
 // Populate scientific explanations for ingredients
 function populateScience(ingredients) {
-    var container = document.getElementById('science-container');
+    let container = document.getElementById('science-container');
     if (!container) return;
 
     container.innerHTML = '';
@@ -340,20 +340,20 @@ function populateScience(ingredients) {
         return;
     }
 
-    var added = 0;
-    for (var i = 0; i < ingredients.length; i++) {
-        var ing = ingredients[i];
+    let added = 0;
+    for (let i = 0; i < ingredients.length; i++) {
+        let ing = ingredients[i];
         if (!ing) continue;
 
-        var desc = ing.scientificDescription || ing.scientific_description || ing.scientificDesc;
+        let desc = ing.scientificDescription || ing.scientific_description || ing.scientificDesc;
         if (desc && String(desc).trim() !== '') {
-            var item = document.createElement('div');
+            let item = document.createElement('div');
             item.className = 'science-item';
 
-            var h = document.createElement('h4');
+            let h = document.createElement('h4');
             h.textContent = ing.name || ing.ingredient || 'Ingredient';
 
-            var p = document.createElement('p');
+            let p = document.createElement('p');
             p.textContent = desc;
 
             item.appendChild(h);
@@ -370,9 +370,9 @@ function populateScience(ingredients) {
 
 // Switch between different tabs on the page
 function switchTab(tabName) {
-    var allViews = document.querySelectorAll('.section-view');
-    var allButtons = document.querySelectorAll('.tab-btn');
-    var i;
+    let allViews = document.querySelectorAll('.section-view');
+    let allButtons = document.querySelectorAll('.tab-btn');
+    let i;
 
     // Remove active class from all views
     for (i = 0; i < allViews.length; i++) {
@@ -385,8 +385,8 @@ function switchTab(tabName) {
     }
 
     // Add active class to selected view and button
-    var selectedView = document.getElementById('view-' + tabName);
-    var selectedBtn = document.getElementById('btn-' + tabName);
+    let selectedView = document.getElementById('view-' + tabName);
+    let selectedBtn = document.getElementById('btn-' + tabName);
 
     if (selectedView) {
         selectedView.classList.add('active');
@@ -398,11 +398,11 @@ function switchTab(tabName) {
 
 // Setup click and keyboard handlers for rating stars
 function setupRatingStarsListener() {
-    var stars = document.querySelectorAll('.rating-stars .star');
-    var i;
+    let stars = document.querySelectorAll('.rating-stars .star');
+    let i;
 
     for (i = 0; i < stars.length; i++) {
-        var star = stars[i];
+        let star = stars[i];
 
         // Click event
         star.addEventListener('click', function() {
@@ -414,8 +414,8 @@ function setupRatingStarsListener() {
 
         // Keyboard event
         star.addEventListener('keydown', function(e) {
-            var isEnter = e.key === 'Enter';
-            var isSpace = e.key === ' ';
+            let isEnter = e.key === 'Enter';
+            let isSpace = e.key === ' ';
             
             if (isEnter || isSpace) {
                 e.preventDefault();
@@ -452,11 +452,11 @@ function updateCommentFormForDuplicateCheck() {
 
 // Update visual display of rating stars based on currentRating
 function updateStarsDisplay() {
-    var stars = document.querySelectorAll('.rating-stars .star');
-    var i;
+    let stars = document.querySelectorAll('.rating-stars .star');
+    let i;
 
     for (i = 0; i < stars.length; i++) {
-        var star = stars[i];
+        let star = stars[i];
         var index = i;
 
         if (index < currentRating) {
@@ -533,8 +533,8 @@ function closeDeleteModal() {
 // Render a single comment with user info and rating
 function renderComment(comment) {
     // Create star display using Bootstrap icons
-    var starsHtml = '';
-    for (var j = 0; j < 5; j++) {
+    let starsHtml = '';
+    for (let j = 0; j < 5; j++) {
         if (j < (comment.rate || 0)) {
             starsHtml = starsHtml + '<i class="bi bi-star-fill"></i>';
         } else {
@@ -542,22 +542,22 @@ function renderComment(comment) {
         }
     }
 
-    var commentDiv = document.createElement('div');
+    let commentDiv = document.createElement('div');
     commentDiv.className = 'comment-card';
     commentDiv.setAttribute('data-comment-id', comment._id);
 
     // Check if current user is comment author
-    var isOwner = sessionData.logged_in && sessionData.user_id === comment.user_id;
-    var deleteBtn = '';
+    let isOwner = sessionData.logged_in && sessionData.user_id === comment.user_id;
+    let deleteBtn = '';
     
     if (isOwner) {
-        var recipeId = getRecipeIdFromUrl();
-        deleteBtn = '<button class="comment-delete-btn" onclick="deleteComment(\'' + recipeId + '\', \'' + comment._id + '\')" title="Delete comment"><i class="bi bi-trash"></i></button>';
+        let recipeId = getRecipeIdFromUrl();
+        deleteBtn = '<button class="comment-delete-btn" onclick="deleteComment(\'" + recipeId + "\', \'" + comment._id + "\')" title="Delete comment"><i class="bi bi-trash"></i></button>';
     }
 
-    var avatarSrc = comment.user_avatar;
-    var userName = comment.user_name || 'User';
-    var description = comment.description || '';
+    let avatarSrc = comment.user_avatar;
+    let userName = comment.user_name || 'User';
+    let description = comment.description || '';
 
     commentDiv.innerHTML = '<div class="comment-header">' +
         '<img src="' + avatarSrc + '" class="avatar" alt="' + userName + '">' +
