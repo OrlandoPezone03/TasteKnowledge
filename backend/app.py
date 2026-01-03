@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, session, request, redirect, url_for
+from flask import Flask, render_template, jsonify, session, request
 from flask.json.provider import DefaultJSONProvider
 import os
 from bson.objectid import ObjectId

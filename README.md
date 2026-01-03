@@ -28,8 +28,6 @@ A web application for discovering recipes and find scientific knowledge behind t
 
 ### Additional Tools
 - **Werkzeug 3.1.4** - WSGI utility library for Flask
-- **Requests 2.32.5** - HTTP client for API calls
-- **PyYAML 6.0.3** - Configuration file parsing
 
 ## Prerequisites
 
@@ -44,7 +42,7 @@ Before you begin, ensure you have the following installed on your system:
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/TasteKnowledge.git
+git clone https://github.com/OrlandoPezone03/TasteKnowledge.git
 cd TasteKnowledge
 ```
 
