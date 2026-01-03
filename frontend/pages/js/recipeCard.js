@@ -1,5 +1,5 @@
 // Recipe Card Creator
-var RecipeCard = {
+const RecipeCard = {
   // Create difficulty indicators using fire icons
   createDifficulty: function (difficulty) {
     let level = difficulty || 1;

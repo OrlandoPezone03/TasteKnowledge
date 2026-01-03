@@ -959,10 +959,10 @@ def api_follow_chef(chef_id):
         print(f"Error in /api/chefs/<chef_id>/follow: {e}")
         return jsonify({'error': 'Server error'}), 500
 
-@app.route('/logout')
+@app.route('/logout', methods=['POST'])
 def logout():
     session.clear()
-    return redirect(url_for('home'))
+    return jsonify({'status': 'success'})
 
 # HTML ROUTES SECTION
 @app.route("/")

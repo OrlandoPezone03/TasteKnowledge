@@ -96,10 +96,3 @@ def chat():
         return jsonify({'response': bot_response, 'status': 'success'})
     except Exception:
         return jsonify({'error': 'AI Communication Error'}), 500
-
-@chef_bot_bp.route('/reset', methods=['POST'])
-def reset_chat():
-    """Clears the current chat session."""
-    session.pop('chat_history', None)
-    session.pop('recipe_context', None)
-    return jsonify({'status': 'success'})
