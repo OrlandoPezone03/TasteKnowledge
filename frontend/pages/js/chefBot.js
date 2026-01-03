@@ -14,7 +14,7 @@ const ChefBot = (function () {
             sendBtn: document.getElementById("chefbotModalSend"),
             badge: document.querySelector(".chefbot-badge"),
             circleButton: document.querySelector(".chefbot-circle"),
-            closeBtn: document.querySelector(".modal-close"),
+            closeBtn: document.querySelector("#chefbot-modal .modal-close"),
         };
     }
 
