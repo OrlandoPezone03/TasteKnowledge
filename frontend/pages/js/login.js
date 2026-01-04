@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: body,
                 credentials: 'same-origin',
                 headers: {
-                    'Accept': 'application/json, text/html'
+                    'Accept': 'application/json'
                 }
             });
 
@@ -71,17 +71,19 @@ document.addEventListener("DOMContentLoaded", () => {
             const contentType = resp.headers.get('content-type') || '';
             if (contentType.includes('application/json')) {
                 const data = await resp.json();
-                if (data && data.success) {
+                
+                // Check if response status is success (200-299)
+                if (resp.ok && data && data.success) {
                     // Save role in localStorage for client-side use
                     if (data.role) {
                         localStorage.setItem('userRole', data.role);
                     }
-                    // Ensure the cookie is set by the browser then navigate to the homepage
+                    // Redirect to the destination provided by backend
                     window.location.href = data.redirect || '/';
                     return;
                 } else {
                     showLoginError(data.message || 'Login failed: check email/password');
-                    console.warn('Login failed (json):', data);
+                    console.warn('Login failed (json):', resp.status, data);
                     return;
                 }
             }

@@ -8,11 +8,15 @@ const urlsToCache = [
   
   // ESSENTIAL PAGES
   '/pages/html/home.html',
+  '/pages/html/navBar.html',
   '/pages/html/offline.html', 
   
   // ASSETS
   '/pages/css/home.css',
   '/pages/js/home.js',
+  '/pages/css/navBar.css',
+  '/pages/js/navBar.js',
+  '/pages/css/offline.css',
   '/pages/js/sw-register.js', 
   '/assets/icon-192x192.png',
   '/assets/icon-512x512.png',
@@ -59,9 +63,8 @@ self.addEventListener('message', event => {
   }
 });
 
-// ============================================
+
 // ROUTING: Apply caching strategy by URL
-// ============================================
 
 // STRATEGY 2: STALE WHILE REVALIDATE (SWR)
 async function staleWhileRevalidate(request) {
