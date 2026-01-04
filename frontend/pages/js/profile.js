@@ -163,7 +163,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (logoutBtn) {
         logoutBtn.onclick = async () => {
             try {
-                // Call logiut api
+                // Call the logout api
                 const response = await fetch("/api/logout", {
                     method: "POST",
                     headers: {
