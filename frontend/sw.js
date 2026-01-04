@@ -1,8 +1,3 @@
-// Service Worker: enables offline mode and intelligent caching
-// Basically: prevents losing data when there's no connection
-
-// Cache versioning: increment when changing strategy
-// this forces updates across all clients
 const CACHE_NAME = 'tk-cache-v1';
 const DATA_CACHE_NAME = 'tk-data-v1';
 
@@ -25,39 +20,7 @@ const urlsToCache = [
   '/assets/logo2.svg',
 ];
 
-// Don't cache these sensitive API endpoints (sessions, login, register)
-const EXCLUDE_FROM_SWR = ['/api/session', '/api/login', '/api/register']; 
-
-
-// SWR strategy: serve data from cache immediately (fast),
-// then update in background without blocking
-function staleWhileRevalidate(request) {
-    const dataCachePromise = caches.open(DATA_CACHE_NAME);
-
-    // Fetch from server and update the cache
-    const fetchAndCache = fetch(request).then(response => {
-        if (response && response.status === 200 && response.type === 'basic') {
-            dataCachePromise.then(cache => {
-                // only cache GET requests, not POST/DELETE
-                if (request.method === 'GET') {
-                    cache.put(request, response.clone());
-                }
-            });
-        }
-        return response;
-    }).catch(error => {
-        console.warn('SW: network unavailable for', request.url);
-        throw error;
-    });
-
-    // Cache first (fast), then update from server
-    return dataCachePromise.then(cache => {
-        return cache.match(request).then(cachedResponse => {
-            // don't wait for network if it's already cached
-            return cachedResponse || fetchAndCache;
-        });
-    });
-}
+const EXCLUDE_FROM_SWR = ['/api/session', '/login', '/register'];
 
 // Download essentials on first load
 self.addEventListener('install', event => {
@@ -73,16 +36,13 @@ self.addEventListener('install', event => {
 
 // Clean up old caches
 self.addEventListener('activate', event => {
-  self.clients.claim(); // take control
-  // keep only these caches, delete the rest
+  self.clients.claim();
   const cacheWhitelist = [CACHE_NAME, DATA_CACHE_NAME]; 
-
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.map(cacheName => {
-          // delete old caches
-            if (!cacheWhitelist.includes(cacheName)) {
+          if (!cacheWhitelist.includes(cacheName)) {
             console.log('SW: old cache removed:', cacheName);
             return caches.delete(cacheName);
           }
@@ -92,43 +52,73 @@ self.addEventListener('activate', event => {
   );
 });
 
-// If the app says "update now", do it immediately
+// Update on demand
 self.addEventListener('message', event => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
 });
 
-// Route requests based on strategy
+// ============================================
+// ROUTING: Apply caching strategy by URL
+// ============================================
+
+// STRATEGY 2: STALE WHILE REVALIDATE (SWR)
+async function staleWhileRevalidate(request) {
+    try {
+        const cache = await caches.open(DATA_CACHE_NAME);
+        const cachedResponse = await cache.match(request);
+        
+        if (cachedResponse) {
+            // Fetch and update in background
+            fetch(request).then(response => {
+                if (response && response.status === 200 && response.type === 'basic') {
+                    cache.put(request, response.clone());
+                }
+            }).catch(error => {
+                console.warn('SW: network unavailable for', request.url);
+            });
+            return cachedResponse;
+        }
+        
+        // No cache, fetch from server
+        const response = await fetch(request);
+        if (response && response.status === 200 && response.type === 'basic') {
+            cache.put(request, response.clone());
+        }
+        return response;
+    } catch (error) {
+        console.warn('SW: error in staleWhileRevalidate for', request.url, error);
+        throw error;
+    }
+}
+
 self.addEventListener('fetch', event => {
-    // only cache GET, POST/DELETE always hit the server
     if (event.request.method !== 'GET') return;
     
     const requestUrl = new URL(event.request.url);
     const pathname = requestUrl.pathname;
 
-    // Don't cache sensitive APIs (login, session, register)
+    // STRATEGY 1: No Cache (login, session, register)
     if (EXCLUDE_FROM_SWR.some(excludePath => pathname.startsWith(excludePath))) {
         event.respondWith(fetch(event.request));
         return; 
     }
     
-    // Show cached data immediately, then update
+    // STRATEGY 2: SWR (Stale While Revalidate) for API routes
     if (pathname.startsWith('/api/')) {
         event.respondWith(staleWhileRevalidate(event.request));
         return; 
     }
     
-    // Cache first (fast), fallback to network
+    // STRATEGY 3: Cache First for static assets and pages
     event.respondWith(
         caches.match(event.request)
             .then(cachedResponse => {
-                // return from cache if available
                 if (cachedResponse) {
                     return cachedResponse;
                 }
                 
-                // otherwise fetch from server and cache if valid
                 return fetch(event.request).then(
                     response => {
                         if (!response || response.status !== 200 || response.type !== 'basic') {
@@ -136,7 +126,6 @@ self.addEventListener('fetch', event => {
                         }
                         
                         const responseToCache = response.clone();
-
                         caches.open(CACHE_NAME) 
                             .then(cache => {
                                 cache.put(event.request, responseToCache);
@@ -146,7 +135,7 @@ self.addEventListener('fetch', event => {
                 )
             })
             .catch(() => {
-                // if everything fails, show offline page
+                // If everything fails show offline page
                 return caches.match('/pages/html/offline.html');
             })
     );
