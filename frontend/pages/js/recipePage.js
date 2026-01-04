@@ -264,7 +264,7 @@ function populateIngredients(ingredients) {
         let div = document.createElement('div');
         div.className = 'ingredient-item';
 
-        let name = ing.name || ing.ingredient || 'Unknown';
+        let name = ing.name || '';
         let quantity = ing.quantity || '';
         let unit = ing.unit || '';
 

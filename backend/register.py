@@ -6,7 +6,7 @@ register_bp = Blueprint("register_bp", __name__)
 
 @register_bp.route("/register", methods=["POST"])
 def register():
-    """Register a new user or chef with credentials."""
+    # Register a new user or chef with credentials.
     nickname = request.form.get("nickname")
     email = request.form.get("email")
     password = request.form.get("password")

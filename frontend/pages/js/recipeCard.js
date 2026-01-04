@@ -3,17 +3,17 @@ const RecipeCard = {
   // Create difficulty indicators using fire icons
   createDifficulty: function (difficulty) {
     let level = difficulty || 1;
-    let stars = "";
+    let difficultyIndicators = "";
     let i;
 
     for (i = 0; i < 5; i++) {
       if (i < level) {
-        stars = stars + '<i style="color: red;" class="bi bi-fire"></i>';
+        difficultyIndicators = difficultyIndicators + '<i style="color: red;" class="bi bi-fire"></i>';
       } else {
-        stars = stars + '<i class="bi bi-fire" style="color: #ddd;"></i>';
+        difficultyIndicators = difficultyIndicators + '<i class="bi bi-fire" style="color: #ddd;"></i>';
       }
     }
-    return stars;
+    return difficultyIndicators;
   },
 
   // Handle recipe deletion

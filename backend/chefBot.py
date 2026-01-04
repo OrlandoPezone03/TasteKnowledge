@@ -23,7 +23,7 @@ DEFAULT_CONTEXT = "No specific recipe provided. Assist with general cooking advi
 
 @chef_bot_bp.route('/set_recipe', methods=['POST'])
 def set_recipe():
-    """Formats the recipe JSON and stores it in the session context."""
+    # Formats the recipe JSON and stores it in the session context.
     recipe = request.get_json()
     if not recipe:
         return jsonify({'status': 'error'}), 400
@@ -51,7 +51,7 @@ def set_recipe():
 
 @chef_bot_bp.route('/chat', methods=['POST'])
 def chat():
-    """Handles the chat logic using Hugging Face Inference API."""
+    # Handles the chat logic using Hugging Face Inference API.
     if not client:
         return jsonify({'error': 'Bot not configured'}), 503
 

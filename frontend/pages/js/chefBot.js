@@ -1,4 +1,4 @@
-// ChefBot modal interactions module
+// ChefBot modal interactions module (IIFE pattern)
 const ChefBot = (function () {
     // Stores the current recipe context for modal interactions
     let currentRecipe = null;
@@ -57,6 +57,7 @@ const ChefBot = (function () {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ message }),
         });
+        if (!response.ok) throw new Error("HTTP " + response.status);
         const data = await response.json();
         // Display bot response
         if (data.status === "success") {
@@ -81,12 +82,6 @@ const ChefBot = (function () {
     // Attaches event listeners to all modal interactive elements
     function attachModalHandlers() {
         const els = selectModalElements();
-
-        if (els.badge)
-        els.badge.addEventListener("click", (e) => {
-            e.preventDefault();
-            openModal();
-        });
 
         if (els.circleButton)
         els.circleButton.addEventListener("click", (e) => {
