@@ -30,12 +30,7 @@ const RecipeCard = {
       fetch("/api/recipes/" + recipeId, { method: "DELETE" })
         .then(function (res) {
           if (res.ok) {
-            card.style.transition = "opacity 0.3s, transform 0.3s";
-            card.style.opacity = "0";
-            card.style.transform = "scale(0.8)";
-            setTimeout(function () {
-              card.remove();
-            }, 300);
+            card.remove();
           } else {
             alert("Error deleting recipe.");
           }

@@ -2,7 +2,7 @@ from flask import Flask, render_template, jsonify, session, request
 from flask.json.provider import DefaultJSONProvider
 import os
 from bson.objectid import ObjectId
-from db import recipes_collection, chef_collection, user_collection, ingredients_collection, comments_collection
+from db import recipes_collection, chef_collection, user_collection, ingredients_collection, comments_collection, DEFAULT_AVATAR
 from login import login_bp
 from register import register_bp
 from chefBot import chef_bot_bp
@@ -27,9 +27,6 @@ app.json = MongoJSONProvider(app)
 # set secure session key
 app.secret_key = os.getenv("SECRET_KEY", "supersecretkey")
 
-# default avatar url (when user has no avatar)
-DEFAULT_AVATAR_URL = "https://imgs.search.brave.com/GgV2avlvxYDeuhFu8D5KI3V8PNMBf6gEm59lDgvqhmg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzIzLzkx/LzllLzIzOTE5ZTlm/ZWRlYjIwZjljMDY3/OWYxYjI1NzllMzc0/LmpwZw"
-
 # register flask blueprints for modular routes
 app.register_blueprint(register_bp)
 app.register_blueprint(login_bp)
@@ -37,7 +34,7 @@ app.register_blueprint(chef_bot_bp)
 
 # HELPER FUNCTIONS SECTION
 def get_user_avatar(user_avatar):
-    return user_avatar if user_avatar else DEFAULT_AVATAR_URL
+    return user_avatar if user_avatar else DEFAULT_AVATAR
 
 def safe_objectid(id_val):
     try:

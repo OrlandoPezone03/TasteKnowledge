@@ -63,8 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: body,
                 credentials: 'same-origin',
                 headers: {
-                    'Accept': 'application/json, text/html',
-                    'X-Requested-With': 'XMLHttpRequest'
+                    'Accept': 'application/json, text/html'
                 }
             });
 

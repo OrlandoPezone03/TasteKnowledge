@@ -24,3 +24,6 @@ user_collection = db["users"]
 chef_collection = db["chefs"]
 ingredients_collection = db["ingredients"]
 comments_collection = db["comments"]
+
+# Default avatar URL
+DEFAULT_AVATAR = "https://imgs.search.brave.com/GgV2avlvxYDeuhFu8D5KI3V8PNMBf6gEm59lDgvqhmg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzIzLzkx/LzllLzIzOTE5ZTlm/ZWRlYjIwZjljMDY3/OWYxYjI1NzllMzc0/LmpwZw"

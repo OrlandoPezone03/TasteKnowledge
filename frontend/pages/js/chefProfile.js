@@ -72,8 +72,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 chefData.user_name || "Unknown Chef";
 
             const avatar = document.getElementById("profile-avatar");
-            avatar.src = chefData.user_avatar || "https://imgs.search.brave.com/GgV2avlvxYDeuhFu8D5KI3V8PNMBf6gEm59lDgvqhmg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzIzLzkx/LzllLzIzOTE5ZTlm/ZWRlYjIwZjljMDY3/OWYxYjI1NzllMzc0/LmpwZw";
-            avatar.onerror = () => (avatar.src = "https://imgs.search.brave.com/GgV2avlvxYDeuhFu8D5KI3V8PNMBf6gEm59lDgvqhmg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzIzLzkx/LzllLzIzOTE5ZTlm/ZWRlYjIwZjljMDY3/OWYxYjI1NzllMzc0/LmpwZw");
+            avatar.src = chefData.user_avatar;
 
             // populate recipes in the recipes view
             const recipesGrid = document.querySelector(".recipes-grid");
@@ -173,8 +172,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 session.user_name || "User";
 
             const avatar = document.getElementById("profile-avatar");
-            avatar.src = session.user_avatar || "https://imgs.search.brave.com/GgV2avlvxYDeuhFu8D5KI3V8PNMBf6gEm59lDgvqhmg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzIzLzkx/LzllLzIzOTE5ZTlm/ZWRlYjIwZjljMDY3/OWYxYjI1NzllMzc0/LmpwZw";
-            avatar.onerror = () => (avatar.src = "https://imgs.search.brave.com/GgV2avlvxYDeuhFu8D5KI3V8PNMBf6gEm59lDgvqhmg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzIzLzkx/LzllLzIzOTE5ZTlm/ZWRlYjIwZjljMDY3/OWYxYjI1NzllMzc0/LmpwZw");
+            avatar.src = session.user_avatar;
 
             // show settings button, hide follow button
             settingsBtn.style.display = "block";

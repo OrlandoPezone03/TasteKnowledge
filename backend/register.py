@@ -1,11 +1,8 @@
 from flask import Blueprint, request, redirect, url_for
 from werkzeug.security import generate_password_hash
-from db import user_collection, chef_collection
+from db import user_collection, chef_collection, DEFAULT_AVATAR
 
 register_bp = Blueprint("register_bp", __name__)
-
-# Avatar di default
-DEFAULT_AVATAR = "https://imgs.search.brave.com/GgV2avlvxYDeuhFu8D5KI3V8PNMBf6gEm59lDgvqhmg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzIzLzkx/LzllLzIzOTE5ZTlm/ZWRlYjIwZjljMDY3/OWYxYjI1NzllMzc0/LmpwZw"
 
 @register_bp.route("/register", methods=["POST"])
 def register():
