@@ -34,5 +34,5 @@ def register():
         "user_avatar": DEFAULT_AVATAR,
     })
 
-    # Redirect to home after successful registration
+    # Redirect to login after successful registration
     return redirect(url_for("login_bp.login"))
