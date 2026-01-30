@@ -105,14 +105,21 @@ body {
 }
 
 .settings-btn {
+    color: var(--text-dark);
+    width: 50px;
+    height: 50px;
     position: absolute;
-    top: 110px;
-    right: 40px;
+    top: 160px;
+    right: 23%;
     background: none;
+    background-color: white;
     border: none;
     font-size: 28px;
     cursor: pointer;
-    z-index: 50;
+    z-index: 0;
+    border-radius: 50%;
+    padding: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
 
 /* Modal */
@@ -382,9 +389,9 @@ body {
     }
 
     .settings-btn {
-        top: 85px;
-        right: 20px;
-        font-size: 24px;
+        top: 110px; 
+        right: 40px;
+        font-size: 28px;
         width: 50px;
         height: 50px;
     }
